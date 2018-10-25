@@ -6,7 +6,7 @@ public class BackgroundPlane {
         JFrame frame = new JFrame("Drone Game");
 
 
-        ImageIcon bg = new ImageIcon("assets/background_sky.png");
+        ImageIcon bg = new ImageIcon("src/assets/background_sky.png");
         JLabel imgLabel = new JLabel(bg);
 
         frame.add(imgLabel);
