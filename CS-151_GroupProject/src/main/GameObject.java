@@ -1,10 +1,21 @@
 package main;
+import java.awt.Graphics2D;
 
 public interface GameObject
 {
-	void draw(java.awt.Graphics g);
+	public void draw(Graphics2D g2);
+
+	public double getLeft();
+
+	public double getRight();
+
+	public double getTop();
+
+	public double getBottom();
 	
-	java.awt.Rectangle getBounds();
+	public abstract void move();
 	
-	void translate(double dx, double dy);
+	public abstract boolean checkBounds();
+	
+	public boolean intersects(GameObject o);
 }

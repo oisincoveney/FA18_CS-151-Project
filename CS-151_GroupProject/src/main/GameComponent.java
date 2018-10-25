@@ -1,11 +1,11 @@
-package test;
+package main;
 import java.awt.*;
 import javax.swing.*;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 @SuppressWarnings("serial")
-public class GameComponent extends JComponent
+public abstract class GameComponent extends JComponent
 {
 	protected LinkedList<GameObject> objects;
 	
@@ -19,6 +19,23 @@ public class GameComponent extends JComponent
 			else i.remove();
 		}
 	}
+	
+	public boolean checkCollisions(GameObject other)
+	{
+		Iterator<GameObject> iter = objects.iterator();
+		while (iter.hasNext())
+		{
+			GameObject obj = iter.next();
+			if (obj.intersects(other))
+			{
+				iter.remove();
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public abstract void spawn(int x, int y);
 	
 	public void paint(Graphics g)
 	{

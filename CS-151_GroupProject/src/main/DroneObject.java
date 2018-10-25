@@ -1,17 +1,19 @@
-package test;
+package main;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import javax.swing.JComponent;
 
 @SuppressWarnings("serial")
-public class DroneObject extends JComponent implements GameObject
+public class DroneObject extends JComponent implements GameObject, PlayableObject
 {
 	private static int minY = 0, maxY;
-	private final Image img;
+	private static Image img;
 	private double x, y;
 	private double v;
 	
 	public static void setMax(int maxY) { DroneObject.maxY = maxY; }
+	
+	public static void setImage(Image img) { DroneObject.img = img; }
 	
 	public void draw(Graphics2D g2) { g2.drawImage(img, (int)x, (int)y, null); }
 
@@ -35,9 +37,8 @@ public class DroneObject extends JComponent implements GameObject
 				getLeft() > o.getRight() && getRight() < o.getLeft();
 	}
 
-	public DroneObject(Image img, double x, double y, double v)
+	public DroneObject(double x, double y, double v)
 	{
-		this.img = img;
 		this.x = x;
 		this.y = y;
 		this.v = v;
