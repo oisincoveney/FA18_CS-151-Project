@@ -9,8 +9,8 @@ public class GameLauncher
     public static void main(String args[])
     {
     	loadImages();
-    	new GameFrame("Drone Game");
-    	//Initialize timer
+    	new GameFrame("Drone Game", 1200, 600);
+    	new UpdateAgent();
     }
     
     private static void loadImages()

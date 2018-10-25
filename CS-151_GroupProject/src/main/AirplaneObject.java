@@ -2,6 +2,7 @@ package main;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
+//TODO: Add code so that the scoreboard knows if the airplane got away
 public class AirplaneObject implements GameObject
 {
 	private static int minX = 0;

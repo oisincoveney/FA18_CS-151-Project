@@ -6,11 +6,13 @@ import java.util.Random;
 @SuppressWarnings("serial")
 public class GameFrame extends JFrame
 {
-	private static final Dimension FRAME_SIZE = new Dimension(1200, 600);
-	private GamePanel gamePanel = new GamePanel();
+	private static Dimension FRAME_SIZE;
+	private static GamePanel gamePanel;
+	private static ScorePanel scorePanel;
 	
-
 	public static void setImage(Image img) { GamePanel.img = img; }
+	
+	public static void update() { gamePanel.update(); }
 	
 	private static class GamePanel extends JPanel
 	{
@@ -33,11 +35,11 @@ public class GameFrame extends JFrame
 		{ 
 			//Move objects
 			planes.move();
-			bullets.move();
+			//bullets.move();
 
 			//Check collisions
-			planes.checkCollisions(drone); //Modify score here
-			bullets.checkCollisions(planes); //Can increment kill count
+			//planes.checkCollisions(drone); //Modify score here
+			//bullets.checkCollisions(planes); //Can increment kill count
 			
 			repaint();
 		}
@@ -46,7 +48,7 @@ public class GameFrame extends JFrame
 		{
 			drone = new DroneObject(20, FRAME_SIZE.height / 2, 1);
 			//Temp for testing
-			for (int n = 0; n < 10; n++) planes.spawn(rnd.nextInt(FRAME_SIZE.width - 320) + 200, rnd.nextInt(FRAME_SIZE.height - 60) + 10);
+			for (int n = 0; n < 10; n++) planes.spawn(rnd.nextInt(FRAME_SIZE.width - 320) + 200, rnd.nextInt(FRAME_SIZE.height - 120) + 10);
 			
 			add(planes);
 			add(bullets);
@@ -54,12 +56,26 @@ public class GameFrame extends JFrame
 		}
 	}
 	
-    public GameFrame(String title)
+	private static class ScorePanel extends JPanel
+	{
+		public ScorePanel()
+		{
+			add(new JLabel("Test"));
+		}
+	}
+	
+    public GameFrame(String title, int width, int height)
     {
     	super(title);
-        add(gamePanel);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+    	FRAME_SIZE = new Dimension(width, height);
+    	gamePanel = new GamePanel();
+    	scorePanel = new ScorePanel();
+    	//Set the layout and add the panels
+    	setLayout(new BorderLayout());
+    	add(gamePanel, BorderLayout.CENTER);
+    	add(scorePanel, BorderLayout.SOUTH);
+        //Set termination settings, visible and specify frame size
+    	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         setMinimumSize(FRAME_SIZE);
 		setPreferredSize(FRAME_SIZE);
