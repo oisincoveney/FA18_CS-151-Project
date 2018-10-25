@@ -9,15 +9,16 @@ public class GameFrame extends JFrame
 	private static final Dimension FRAME_SIZE = new Dimension(1200, 600);
 	private GamePanel gamePanel = new GamePanel();
 	
-	public static class GamePanel extends JPanel
+
+	public static void setImage(Image img) { GamePanel.img = img; }
+	
+	private static class GamePanel extends JPanel
 	{
 		private static Image img;
 		private Random rnd = new Random();
 		private AirplaneComponent planes = new AirplaneComponent();
 		private BulletComponent bullets = new BulletComponent();
 		private DroneObject drone;
-		
-		public static void setImage(Image img) { GamePanel.img = img; }
 		
 		public void paint(Graphics g)
 		{
@@ -45,7 +46,7 @@ public class GameFrame extends JFrame
 		{
 			drone = new DroneObject(20, FRAME_SIZE.height / 2, 1);
 			//Temp for testing
-			for (int n = 0; n < 10; n++) planes.spawn(rnd.nextInt(FRAME_SIZE.width - 320) + 200, rnd.nextInt(FRAME_SIZE.height - 50) + 10);
+			for (int n = 0; n < 10; n++) planes.spawn(rnd.nextInt(FRAME_SIZE.width - 320) + 200, rnd.nextInt(FRAME_SIZE.height - 60) + 10);
 			
 			add(planes);
 			add(bullets);
