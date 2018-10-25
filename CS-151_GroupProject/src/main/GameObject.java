@@ -1,3 +1,5 @@
+package main;
+
 public interface GameObject
 {
 	void draw(java.awt.Graphics g);
