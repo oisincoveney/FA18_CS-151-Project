@@ -29,8 +29,8 @@ public class BulletObject implements GameObject
 	
 	public boolean intersects(GameObject o)
 	{
-		return getBottom() > o.getTop() && getTop() < o.getBottom() &&
-				getLeft() > o.getRight() && getRight() < o.getLeft();
+		return getLeft() < o.getRight() && getRight() > o.getLeft() &&
+				getBottom() > o.getTop() && getTop() < o.getBottom();
 	}
 
 	public BulletObject(double x, double y, double v)

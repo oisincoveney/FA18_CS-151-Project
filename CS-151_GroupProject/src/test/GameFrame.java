@@ -30,7 +30,7 @@ public class GameFrame extends JFrame
 	{
 		private static Image img;
 		private Random rnd;
-		private DroneObject drone;
+		private DroneComponent drone;
 		private AirplaneComponent planes;
 		private BulletComponent bullets;
 		
@@ -38,21 +38,21 @@ public class GameFrame extends JFrame
 		{
 			super.paintComponent(g);
 			g.drawImage(img, 0, 0, null);
-			//drone.paint(g);
+			drone.paint(g);
 			planes.paint(g);
 			bullets.paint(g);
 		}
 		
 		public void move()
 		{
-			//drone.move();
+			drone.move();
 			planes.move();
 			bullets.move();
 		}
 		
 		public void checkCollisions()
 		{
-			//planes.checkCollisions(drone);
+			planes.checkCollisions(drone);
 			//bullets.checkCollisions(planes);
 		}
 		
@@ -64,13 +64,13 @@ public class GameFrame extends JFrame
 		public GamePanel()
 		{
 			rnd = new Random();
-			drone = new DroneObject(20, FRAME_SIZE.height / 2, 1);
+			drone = new DroneComponent(20, (FRAME_SIZE.height / 2) - 100); //Change so components know frame size
 			planes = new AirplaneComponent();
 			bullets = new BulletComponent();
 			
+			add(drone);
 			add(planes);
 			add(bullets);
-			add(drone);
 		}
 	}
 	

@@ -1,45 +1,14 @@
 package test;
-import java.awt.*;
-import javax.swing.*;
-import java.util.Iterator;
-import java.util.LinkedList;
 
-@SuppressWarnings("serial")
-public abstract class GameComponent extends JComponent
+public interface GameComponent
 {
-	protected LinkedList<GameObject> objects;
-
-	public void move()
-	{
-		Iterator<GameObject> i = objects.iterator();
-		while (i.hasNext())
-		{
-			GameObject obj = i.next();
-			if (obj.checkBounds()) obj.move();
-			else i.remove();
-		}
-	}
+	public void move();
 	
-	public boolean checkCollisions(GameObject other)
-	{
-		Iterator<GameObject> i = objects.iterator();
-		while (i.hasNext())
-		{
-			GameObject obj = i.next();
-			if (obj.intersects(other))
-			{
-				i.remove();
-				return true;
-			}
-		}
-		return false;
-	}
+	public void spawn(int x, int y);
 	
-	public abstract void spawn(int x, int y);
+	public boolean checkCollisions(GameObject obj);
 	
-	public void paint(Graphics g)
-	{
-		Graphics2D g2 = (Graphics2D) g;
-		for (GameObject obj : objects) obj.draw(g2);
-	}
+	public int checkCollisions(GameComponent comp);
+	
+	public void paint(java.awt.Graphics g);
 }
