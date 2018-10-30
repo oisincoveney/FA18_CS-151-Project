@@ -10,7 +10,7 @@ public class GameLauncher
     {
     	loadImages();
     	GameFrame gameFrame = new GameFrame("Drone Game", 1200, 600);
-    	gameFrame.setUpdateAgent(5, 12);
+    	gameFrame.setUpdateAgent(5, 1200);
     }
     
     private static void loadImages()
