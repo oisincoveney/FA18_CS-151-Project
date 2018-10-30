@@ -19,6 +19,10 @@ public class DroneObject implements GameObject
 	
 	public void changeDir() { v = -v; }
 	
+	public double getX() { return x; }
+	
+	public double getY() { return y; }
+	
 	public double getLeft() { return x; }
 
 	public double getRight() { return x + img.getWidth(null); }

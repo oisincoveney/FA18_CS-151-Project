@@ -5,15 +5,12 @@ import java.awt.Graphics2D;
 import javax.swing.JComponent;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Random;
 
 @SuppressWarnings("serial")
 public class BulletComponent extends JComponent implements GameComponent
 {
 	private LinkedList<BulletObject> bullets;
-	private final Dimension panelDimensions;
 	private final double BULLET_SPEED = 4;
-	private Random rnd = new Random();
 	
 	public void move()
 	{
@@ -26,13 +23,11 @@ public class BulletComponent extends JComponent implements GameComponent
 		}
 	}
 	
-	public void spawn()
+	public void spawn(int x, int y)
 	{
-		/* TEMP */
-		//Will need to spawn on the player
-		int x = 40, y = rnd.nextInt(panelDimensions.height - 30) + 10;
 		bullets.addLast(new BulletObject(x, y, BULLET_SPEED));
 	}
+	
 
 	public boolean checkCollisions(GameObject obj)
 	{
@@ -73,7 +68,6 @@ public class BulletComponent extends JComponent implements GameComponent
 	
 	public BulletComponent(Dimension panelDimensions)
 	{
-		this.panelDimensions = panelDimensions;
 		BulletObject.setMax(panelDimensions.width + 20);
 		bullets = new LinkedList<BulletObject>();
 	}

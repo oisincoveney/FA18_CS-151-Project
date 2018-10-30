@@ -52,14 +52,14 @@ public class GameFrame extends JFrame
 		
 		public void spawnTarget() { planes.spawn(); }
 		
-		public void spawnBullet() { bullets.spawn(); }
+		public void spawnBullet() { drone.shoot(); }
 		
 		public GamePanel(Dimension dimensions)
 		{
 			//Initialize game components
-			drone = new DroneComponent(dimensions);
 			planes = new AirplaneComponent(dimensions);
 			bullets = new BulletComponent(dimensions);
+			drone = new DroneComponent(dimensions, bullets);
 			//Add all game components
 			add(drone);
 			add(planes);
