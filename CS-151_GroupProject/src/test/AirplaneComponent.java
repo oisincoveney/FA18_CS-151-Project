@@ -1,4 +1,5 @@
 package test;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JComponent;
@@ -10,6 +11,7 @@ import java.util.Random;
 public class AirplaneComponent extends JComponent implements GameComponent
 {
 	private LinkedList<AirplaneObject> planes;
+	private final Dimension panelDimensions;
 	private final double MAX_SPEED = 1.2;
 	private Random rnd = new Random();
 	
@@ -24,9 +26,10 @@ public class AirplaneComponent extends JComponent implements GameComponent
 		}
 	}
 	
-	public void spawn(int x, int y)
+	public void spawn()
 	{
-		//Y needs to be changed to be more accurate depending on panel height and image height
+		int x = panelDimensions.width + rnd.nextInt(200) + 60;
+		int y = rnd.nextInt(panelDimensions.height - 110) + 5;
 		planes.addLast(new AirplaneObject(rnd.nextInt(AirplaneObject.imgCount()), x, y, MAX_SPEED - (rnd.nextInt(4) * 0.1)));
 	}
 	
@@ -67,8 +70,9 @@ public class AirplaneComponent extends JComponent implements GameComponent
 		for (GameObject plane : planes) plane.draw(g2);
 	}
 	
-	public AirplaneComponent()
+	public AirplaneComponent(Dimension panelDimensions)
 	{
+		this.panelDimensions = panelDimensions;
 		planes = new LinkedList<AirplaneObject>();
 	}
 }

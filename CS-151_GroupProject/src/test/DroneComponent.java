@@ -1,4 +1,5 @@
 package test;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JComponent;
@@ -6,6 +7,7 @@ import javax.swing.JComponent;
 @SuppressWarnings("serial")
 public class DroneComponent extends JComponent implements GameComponent
 {
+	private final Dimension panelDimensions;
 	private final double DRONE_SPEED = 1;
 	private DroneObject drone;
 	
@@ -15,9 +17,9 @@ public class DroneComponent extends JComponent implements GameComponent
 		drone.move();
 	}
 	
-	public void spawn(int x, int y)
+	public void spawn()
 	{
-		drone = new DroneObject(x, y, DRONE_SPEED);
+		drone = new DroneObject(20, (panelDimensions.height / 2) - 100, DRONE_SPEED);
 	}
 	
 	public boolean checkCollisions(GameObject obj)
@@ -38,8 +40,10 @@ public class DroneComponent extends JComponent implements GameComponent
 		drone.draw(g2);
 	}
 	
-	public DroneComponent(int x, int y)
+	public DroneComponent(Dimension panelDimensions)
 	{
-		spawn(x, y);
+		this.panelDimensions = panelDimensions;
+		DroneObject.setMax(panelDimensions.height - 100);
+		spawn();
 	}
 }

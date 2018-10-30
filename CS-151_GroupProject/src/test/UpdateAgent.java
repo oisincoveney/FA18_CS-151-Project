@@ -14,7 +14,13 @@ public class UpdateAgent
 	};
 	
 	private ActionListener spawnListener = new ActionListener() {
-		public void actionPerformed(ActionEvent e) { gameFrame.spawnTarget(); }
+		public void actionPerformed(ActionEvent e)
+		{
+			gameFrame.spawnTarget();
+			/* TEMP */
+			//Testing bullet collisions with planes
+			gameFrame.spawnBullet();
+		}
 	};
 	
 	public void SetDifficulty(int spawnDelay) { spawnTimer.setDelay(spawnDelay); }

@@ -4,7 +4,7 @@ public interface GameComponent
 {
 	public void move();
 	
-	public void spawn(int x, int y);
+	public void spawn();
 	
 	public boolean checkCollisions(GameObject obj);
 	

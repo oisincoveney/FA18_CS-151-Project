@@ -7,7 +7,6 @@ import java.util.Random;
 public class GameFrame extends JFrame
 {
 	private static Image img;
-	private Random rnd;
 	private Dimension FRAME_SIZE;
 	private GamePanel gamePanel;
 	private ScorePanel scorePanel;
@@ -21,12 +20,9 @@ public class GameFrame extends JFrame
 		gamePanel.repaint();
 	}
 	
-	public void spawnProjectile()
-	{
-		//check if the drone is ready to fire, if it is then spawn a bullet at the drone
-	}
-	
 	public void spawnTarget() { gamePanel.spawnTarget(); }
+	
+	public void spawnBullet() { gamePanel.spawnBullet(); }
 	
 	private class GamePanel extends JPanel
 	{
@@ -53,21 +49,18 @@ public class GameFrame extends JFrame
 		public void checkCollisions()
 		{
 			drone.checkCollisions(planes);
-			//bullets.checkCollisions(planes);
+			bullets.checkCollisions(planes);
 		}
 		
-		public void spawnTarget()
-		{
-			planes.spawn(FRAME_SIZE.width + rnd.nextInt(200) + 60, rnd.nextInt(FRAME_SIZE.height - 110) + 5);
-		}
+		public void spawnTarget() { planes.spawn(); }
 		
-		public GamePanel()
+		public void spawnBullet() { bullets.spawn(); }
+		
+		public GamePanel(Dimension dimensions)
 		{
-			rnd = new Random();
-			drone = new DroneComponent(20, (FRAME_SIZE.height / 2) - 100); //Change so components know frame size
-			DroneObject.setMax(FRAME_SIZE.height - 120); //temp
-			planes = new AirplaneComponent();
-			bullets = new BulletComponent();
+			drone = new DroneComponent(dimensions); //Change so components know frame size
+			planes = new AirplaneComponent(dimensions);
+			bullets = new BulletComponent(dimensions);
 			
 			add(drone);
 			add(planes);
@@ -88,7 +81,7 @@ public class GameFrame extends JFrame
     	//Create the frame and initialize the components
     	super(title);
     	FRAME_SIZE = new Dimension(width, height);
-    	gamePanel = new GamePanel();
+    	gamePanel = new GamePanel(FRAME_SIZE);
     	scorePanel = new ScorePanel();
     	//Set the layout and add the panels
     	setLayout(new BorderLayout());

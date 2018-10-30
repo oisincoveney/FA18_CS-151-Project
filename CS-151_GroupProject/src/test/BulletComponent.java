@@ -1,15 +1,19 @@
 package test;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JComponent;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Random;
 
 @SuppressWarnings("serial")
 public class BulletComponent extends JComponent implements GameComponent
 {
 	private LinkedList<BulletObject> bullets;
-	private final double BULLET_SPEED = 1;
+	private final Dimension panelDimensions;
+	private final double BULLET_SPEED = 4;
+	private Random rnd = new Random();
 	
 	public void move()
 	{
@@ -22,9 +26,11 @@ public class BulletComponent extends JComponent implements GameComponent
 		}
 	}
 	
-	public void spawn(int x, int y)
+	public void spawn()
 	{
-		//Y needs to be changed to be more accurate depending on drone image height and bullet image height
+		/* TEMP */
+		//Will need to spawn on the player
+		int x = 40, y = rnd.nextInt(panelDimensions.height - 100) + 10;
 		bullets.addLast(new BulletObject(x, y, BULLET_SPEED));
 	}
 
@@ -65,8 +71,10 @@ public class BulletComponent extends JComponent implements GameComponent
 		for (GameObject bullet : bullets) bullet.draw(g2);
 	}
 	
-	public BulletComponent()
+	public BulletComponent(Dimension panelDimensions)
 	{
+		this.panelDimensions = panelDimensions;
+		BulletObject.setMax(panelDimensions.width + 20);
 		bullets = new LinkedList<BulletObject>();
 	}
 }
