@@ -1,35 +1,29 @@
 package main;
 import java.awt.*;
 import javax.swing.*;
-import java.util.Random;
 
 @SuppressWarnings("serial")
 public class GameFrame extends JFrame
 {
-	private static Dimension FRAME_SIZE;
-	private static GamePanel gamePanel;
-	private static ScorePanel scorePanel;
+	private static Image img;
+	private GamePanel gamePanel;
+	private ScorePanel scorePanel;
 	
-	public static void setImage(Image img) { GamePanel.img = img; }
+	public static void setImage(Image img) { GameFrame.img = img; }
 	
-	public static void update()
+	public void update()
 	{
 		gamePanel.move();
 		gamePanel.checkCollisions();
 		gamePanel.repaint();
 	}
 	
-	public static void spawnProjectile()
-	{
-		//check if the drone is ready to fire, if it is then spawn a bullet at the drone
-	}
+	public void spawnTarget() { gamePanel.spawnTarget(); }
 	
-	public static void spawnTarget() { gamePanel.spawnTarget(); }
+	public void spawnBullet() { gamePanel.spawnBullet(); }
 	
-	private static class GamePanel extends JPanel
+	private class GamePanel extends JPanel
 	{
-		private static Image img;
-		private Random rnd;
 		private DroneComponent drone;
 		private AirplaneComponent planes;
 		private BulletComponent bullets;
@@ -53,29 +47,31 @@ public class GameFrame extends JFrame
 		public void checkCollisions()
 		{
 			drone.checkCollisions(planes);
-			//bullets.checkCollisions(planes);
+			bullets.checkCollisions(planes);
 		}
 		
-		public void spawnTarget()
-		{
-			planes.spawn(FRAME_SIZE.width + rnd.nextInt(200) + 60, rnd.nextInt(FRAME_SIZE.height - 110) + 5);
-		}
+		public void spawnTarget() { planes.spawn(); }
 		
-		public GamePanel()
+		public void spawnBullet() { drone.shoot(); }
+		
+		public GamePanel(Dimension dimensions)
 		{
-			rnd = new Random();
-			drone = new DroneComponent(20, (FRAME_SIZE.height / 2) - 100); //Change so components know frame size
-			DroneObject.setMax(FRAME_SIZE.height - 120); //temp
-			planes = new AirplaneComponent();
-			bullets = new BulletComponent();
-			
+			//Initialize game components
+			planes = new AirplaneComponent(dimensions);
+			bullets = new BulletComponent(dimensions);
+			drone = new DroneComponent(dimensions, bullets);
+			//Add all game components
 			add(drone);
 			add(planes);
 			add(bullets);
+			//Set panel size
+	        setMinimumSize(dimensions);
+			setPreferredSize(dimensions);
+			setMaximumSize(dimensions);
 		}
 	}
 	
-	private static class ScorePanel extends JPanel
+	private class ScorePanel extends JPanel
 	{
 		public ScorePanel()
 		{
@@ -87,19 +83,16 @@ public class GameFrame extends JFrame
     {
     	//Create the frame and initialize the components
     	super(title);
-    	FRAME_SIZE = new Dimension(width, height);
-    	gamePanel = new GamePanel();
+    	gamePanel = new GamePanel(new Dimension(width, height));
     	scorePanel = new ScorePanel();
     	//Set the layout and add the panels
-    	setLayout(new BorderLayout());
+    	setLayout(new BorderLayout(0, 0));
     	add(gamePanel, BorderLayout.CENTER);
     	add(scorePanel, BorderLayout.SOUTH);
-        //Set termination settings, visible and specify frame size
+        //Set termination settings, lock frame size, and make visible
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	setResizable(false);
         setVisible(true);
-        setMinimumSize(FRAME_SIZE);
-		setPreferredSize(FRAME_SIZE);
-		setMaximumSize(FRAME_SIZE);
-		setResizable(false);
+		pack();
     }
 }

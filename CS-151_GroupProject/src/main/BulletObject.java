@@ -17,6 +17,10 @@ public class BulletObject implements GameObject
 
 	public void move() { x += v; }
 	
+	public double getX() { return x; }
+	
+	public double getY() { return y; }
+	
 	public double getLeft() { return x; }
 
 	public double getRight() { return x + img.getWidth(null); }

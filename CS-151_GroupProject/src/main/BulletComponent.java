@@ -1,4 +1,5 @@
 package main;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JComponent;
@@ -9,7 +10,7 @@ import java.util.LinkedList;
 public class BulletComponent extends JComponent implements GameComponent
 {
 	private LinkedList<BulletObject> bullets;
-	private final double BULLET_SPEED = 1;
+	private final double BULLET_SPEED = 4;
 	
 	public void move()
 	{
@@ -24,9 +25,9 @@ public class BulletComponent extends JComponent implements GameComponent
 	
 	public void spawn(int x, int y)
 	{
-		//Y needs to be changed to be more accurate depending on drone image height and bullet image height
 		bullets.addLast(new BulletObject(x, y, BULLET_SPEED));
 	}
+	
 
 	public boolean checkCollisions(GameObject obj)
 	{
@@ -65,8 +66,9 @@ public class BulletComponent extends JComponent implements GameComponent
 		for (GameObject bullet : bullets) bullet.draw(g2);
 	}
 	
-	public BulletComponent()
+	public BulletComponent(Dimension panelDimensions)
 	{
+		BulletObject.setMax(panelDimensions.width + 20);
 		bullets = new LinkedList<BulletObject>();
 	}
 }

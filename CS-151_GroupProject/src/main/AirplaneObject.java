@@ -19,6 +19,10 @@ public class AirplaneObject implements GameObject
 
 	public void move() { x -= v; }
 	
+	public double getX() { return x; }
+	
+	public double getY() { return y; }
+	
 	public double getLeft() { return x; }
 
 	public double getRight() { return x + images[imgIndex].getWidth(null); }

@@ -5,21 +5,29 @@ import java.awt.event.ActionListener;
 
 public class UpdateAgent
 {
+	private GameFrame gameFrame;
 	private Timer updateTimer;
 	private Timer spawnTimer;
 	
 	private ActionListener updateListener = new ActionListener() {
-		public void actionPerformed(ActionEvent e) { GameFrame.update(); }
+		public void actionPerformed(ActionEvent e) { gameFrame.update(); }
 	};
 	
 	private ActionListener spawnListener = new ActionListener() {
-		public void actionPerformed(ActionEvent e) { GameFrame.spawnTarget(); }
+		public void actionPerformed(ActionEvent e)
+		{
+			gameFrame.spawnTarget();
+			/* TEMP */
+			//Testing bullet collisions with planes
+			gameFrame.spawnBullet();
+		}
 	};
 	
 	public void SetDifficulty(int spawnDelay) { spawnTimer.setDelay(spawnDelay); }
 	
-	public UpdateAgent(int updateDelay, int spawnDelay)
+	public UpdateAgent(GameFrame gameFrame, int updateDelay, int spawnDelay)
 	{
+		this.gameFrame = gameFrame;
 		updateTimer = new Timer(updateDelay, updateListener);
 		spawnTimer = new Timer(spawnDelay, spawnListener);
 		updateTimer.start();

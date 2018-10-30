@@ -1,4 +1,5 @@
 package main;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JComponent;
@@ -6,6 +7,7 @@ import javax.swing.JComponent;
 @SuppressWarnings("serial")
 public class DroneComponent extends JComponent implements GameComponent
 {
+	private final BulletComponent bullets;
 	private final double DRONE_SPEED = 1;
 	private DroneObject drone;
 	
@@ -15,6 +17,11 @@ public class DroneComponent extends JComponent implements GameComponent
 		drone.move();
 	}
 	
+	public void shoot()
+	{
+		bullets.spawn((int) drone.getX() + 86, (int) drone.getY() + 38);
+	}	
+	
 	public void spawn(int x, int y)
 	{
 		drone = new DroneObject(x, y, DRONE_SPEED);
@@ -22,14 +29,12 @@ public class DroneComponent extends JComponent implements GameComponent
 	
 	public boolean checkCollisions(GameObject obj)
 	{
-		if (drone.intersects(obj)) return true;
-		return false;
+		return drone.intersects(obj);
 	}
 	
 	public int checkCollisions(GameComponent comp)
 	{
-		if (comp.checkCollisions(drone)) return 1;
-		return 0;
+		return (comp.checkCollisions(drone)) ? 1 : 0;
 	}
 	
 	public void paint(Graphics g)
@@ -38,8 +43,10 @@ public class DroneComponent extends JComponent implements GameComponent
 		drone.draw(g2);
 	}
 	
-	public DroneComponent(int x, int y)
+	public DroneComponent(Dimension panelDimensions, BulletComponent bullets)
 	{
-		spawn(x, y);
+		this.bullets = bullets;
+		DroneObject.setMax(panelDimensions.height - 20);
+		spawn(20, (panelDimensions.height / 2) - 100);
 	}
 }

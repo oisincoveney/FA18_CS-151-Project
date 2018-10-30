@@ -4,7 +4,7 @@ import java.awt.Image;
 
 public class DroneObject implements GameObject
 {
-	private static int minY = 0, maxY;
+	private static int minY = 10, maxY;
 	private static Image img;
 	private double x, y;
 	private double v;
@@ -18,6 +18,10 @@ public class DroneObject implements GameObject
 	public void move() { y += v; }
 	
 	public void changeDir() { v = -v; }
+	
+	public double getX() { return x; }
+	
+	public double getY() { return y; }
 	
 	public double getLeft() { return x; }
 
