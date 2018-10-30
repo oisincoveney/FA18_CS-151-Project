@@ -14,6 +14,7 @@ public class AirplaneComponent extends JComponent implements GameComponent
 	private final Dimension panelDimensions;
 	private final double MAX_SPEED = 1.2;
 	private Random rnd = new Random();
+	private int spawnDir = 1;
 	
 	public void move()
 	{
@@ -28,7 +29,8 @@ public class AirplaneComponent extends JComponent implements GameComponent
 	
 	public void spawn()
 	{
-		spawn(panelDimensions.width + rnd.nextInt(200) + 60, rnd.nextInt(panelDimensions.height - 60) + 5);
+		spawn(panelDimensions.width + rnd.nextInt(200) + 60, spawnDir * rnd.nextInt((panelDimensions.height / 2) - 30) + (panelDimensions.height / 2) - 20);
+		spawnDir = -spawnDir;
 	}
 	
 	public void spawn(int x, int y)
