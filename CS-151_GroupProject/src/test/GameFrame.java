@@ -9,7 +9,59 @@ public class GameFrame extends JFrame
 	private ScorePanel scorePanel;
 	private UpdateAgent updateAgent;
 	
-	private class ScorePanel extends JPanel
+	public class GamePanel extends JPanel
+	{
+		private DroneComponent drone;
+		private AirplaneComponent planes;
+		private BulletComponent bullets;
+		private Image img;
+				
+		public void move()
+		{
+			drone.move();
+			planes.move();
+			bullets.move();
+		}
+		
+		public void checkCollisions()
+		{
+			drone.checkCollisions(planes);
+			bullets.checkCollisions(planes);
+		}
+		
+		public void spawnTarget() { planes.spawn(); }
+		
+		public void spawnBullet() { drone.shoot(); }
+		
+		public void paint(Graphics g)
+		{
+			super.paintComponent(g);
+			g.drawImage(img, 0, 0, null);
+			drone.paint(g);
+			planes.paint(g);
+			bullets.paint(g);
+		}
+		
+		public void setImage(Image img) { this.img = img; }
+		
+		public GamePanel(Dimension dimensions)
+		{
+			//Initialize game components
+			planes = new AirplaneComponent(dimensions);
+			bullets = new BulletComponent(dimensions);
+			drone = new DroneComponent(dimensions, bullets);
+			//Add all game components
+			add(drone);
+			add(planes);
+			add(bullets);
+			//Set panel size
+	        setMinimumSize(dimensions);
+			setPreferredSize(dimensions);
+			setMaximumSize(dimensions);
+		}
+	}
+	
+	public class ScorePanel extends JPanel
 	{
 		public ScorePanel()
 		{
@@ -21,6 +73,14 @@ public class GameFrame extends JFrame
 	{
 		updateAgent = new UpdateAgent(gamePanel, updateDelay, spawnDelay);
 		updateAgent.start();
+	}
+	
+	public void setImages(Image bgImg, Image playerImg, Image[] airplaneImgs, Image missileImg)
+	{
+		gamePanel.setImage(bgImg);
+		gamePanel.drone.setImage(playerImg);
+		gamePanel.planes.setImages(airplaneImgs);
+		gamePanel.bullets.setImage(missileImg);
 	}
 	
     public GameFrame(String title, int width, int height)

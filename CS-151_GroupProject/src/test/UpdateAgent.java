@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 public class UpdateAgent
 {
-	private GamePanel gamePanel;
+	private GameFrame.GamePanel gamePanel;
 	private Timer updateTimer;
 	private Timer spawnTimer;
 	
@@ -36,7 +36,7 @@ public class UpdateAgent
 	
 	public void setDifficulty(int spawnDelay) { spawnTimer.setDelay(spawnDelay); }
 	
-	public UpdateAgent(GamePanel gamePanel, int updateDelay, int spawnDelay)
+	public UpdateAgent(GameFrame.GamePanel gamePanel, int updateDelay, int spawnDelay)
 	{
 		this.gamePanel = gamePanel;
 		updateTimer = new Timer(updateDelay, updateListener);

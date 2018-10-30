@@ -6,10 +6,14 @@ import javax.imageio.ImageIO;
 
 public class GameLauncher
 {
+	private static Image[] airplaneImgs = new Image[4];
+	private static Image bgImg, playerImg, missileImg;
+	
     public static void main(String args[])
     {
     	loadImages();
     	GameFrame gameFrame = new GameFrame("Drone Game", 1200, 600);
+    	gameFrame.setImages(bgImg, playerImg, airplaneImgs, missileImg);
     	gameFrame.setUpdateAgent(5, 1200);
     }
     
@@ -19,16 +23,14 @@ public class GameLauncher
     	
     	try
     	{
-    		GamePanel.setImage(ImageIO.read(new File(dir + "background_sky.png")));
-    		DroneObject.setImage(ImageIO.read(new File(dir + "player.png")));
-    		BulletObject.setImage(ImageIO.read(new File(dir + "missile.png")));
+    		bgImg = ImageIO.read(new File(dir + "background_sky.png"));
+    		playerImg = ImageIO.read(new File(dir + "player.png"));
+    		missileImg = ImageIO.read(new File(dir + "missile.png"));
     		
-    		Image[] airplaneImages = new Image[4];
-    		for (int n = 0; n < 4; n++)
+    		for (int n = 0; n < airplaneImgs.length; n++)
     		{
-    			airplaneImages[n] = ImageIO.read(new File(dir + "plane" + n + ".png"));
+    			airplaneImgs[n] = ImageIO.read(new File(dir + "plane" + n + ".png"));
     		}
-    		AirplaneObject.setImages(airplaneImages);
     	}
     	catch (IOException e)
     	{
