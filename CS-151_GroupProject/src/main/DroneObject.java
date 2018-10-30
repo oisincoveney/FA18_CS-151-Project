@@ -1,10 +1,8 @@
 package main;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import javax.swing.JComponent;
 
-@SuppressWarnings("serial")
-public class DroneObject extends JComponent implements GameObject, PlayableObject
+public class DroneObject implements GameObject
 {
 	private static int minY = 0, maxY;
 	private static Image img;
@@ -33,8 +31,8 @@ public class DroneObject extends JComponent implements GameObject, PlayableObjec
 	
 	public boolean intersects(GameObject o)
 	{
-		return getBottom() > o.getTop() && getTop() < o.getBottom() &&
-				getLeft() > o.getRight() && getRight() < o.getLeft();
+		return getLeft() < o.getRight() && getRight() > o.getLeft() &&
+				getBottom() > o.getTop() && getTop() < o.getBottom();
 	}
 
 	public DroneObject(double x, double y, double v)

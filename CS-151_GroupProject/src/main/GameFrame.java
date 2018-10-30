@@ -12,15 +12,27 @@ public class GameFrame extends JFrame
 	
 	public static void setImage(Image img) { GamePanel.img = img; }
 	
-	public static void update() { gamePanel.update(); }
+	public static void update()
+	{
+		gamePanel.move();
+		gamePanel.checkCollisions();
+		gamePanel.repaint();
+	}
+	
+	public static void spawnProjectile()
+	{
+		//check if the drone is ready to fire, if it is then spawn a bullet at the drone
+	}
+	
+	public static void spawnTarget() { gamePanel.spawnTarget(); }
 	
 	private static class GamePanel extends JPanel
 	{
 		private static Image img;
-		private Random rnd = new Random();
-		private AirplaneComponent planes = new AirplaneComponent();
-		private BulletComponent bullets = new BulletComponent();
-		private DroneObject drone;
+		private Random rnd;
+		private DroneComponent drone;
+		private AirplaneComponent planes;
+		private BulletComponent bullets;
 		
 		public void paint(Graphics g)
 		{
@@ -31,28 +43,35 @@ public class GameFrame extends JFrame
 			bullets.paint(g);
 		}
 		
-		public void update()
-		{ 
-			//Move objects
+		public void move()
+		{
+			drone.move();
 			planes.move();
-			//bullets.move();
-
-			//Check collisions
-			//planes.checkCollisions(drone); //Modify score here
-			//bullets.checkCollisions(planes); //Can increment kill count
-			
-			repaint();
+			bullets.move();
+		}
+		
+		public void checkCollisions()
+		{
+			drone.checkCollisions(planes);
+			//bullets.checkCollisions(planes);
+		}
+		
+		public void spawnTarget()
+		{
+			planes.spawn(FRAME_SIZE.width + rnd.nextInt(200) + 60, rnd.nextInt(FRAME_SIZE.height - 110) + 5);
 		}
 		
 		public GamePanel()
 		{
-			drone = new DroneObject(20, FRAME_SIZE.height / 2, 1);
-			//Temp for testing
-			for (int n = 0; n < 10; n++) planes.spawn(rnd.nextInt(FRAME_SIZE.width - 320) + 200, rnd.nextInt(FRAME_SIZE.height - 120) + 10);
+			rnd = new Random();
+			drone = new DroneComponent(20, (FRAME_SIZE.height / 2) - 100); //Change so components know frame size
+			DroneObject.setMax(FRAME_SIZE.height - 120); //temp
+			planes = new AirplaneComponent();
+			bullets = new BulletComponent();
 			
+			add(drone);
 			add(planes);
 			add(bullets);
-			add(drone);
 		}
 	}
 	
@@ -66,6 +85,7 @@ public class GameFrame extends JFrame
 	
     public GameFrame(String title, int width, int height)
     {
+    	//Create the frame and initialize the components
     	super(title);
     	FRAME_SIZE = new Dimension(width, height);
     	gamePanel = new GamePanel();

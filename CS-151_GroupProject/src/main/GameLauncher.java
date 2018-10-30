@@ -10,7 +10,7 @@ public class GameLauncher
     {
     	loadImages();
     	new GameFrame("Drone Game", 1200, 600);
-    	new UpdateAgent();
+    	new UpdateAgent(5, 1200);
     }
     
     private static void loadImages()
@@ -20,8 +20,8 @@ public class GameLauncher
     	try
     	{
     		GameFrame.setImage(ImageIO.read(new File(dir + "background_sky.png")));
+    		DroneObject.setImage(ImageIO.read(new File(dir + "player.png")));
     		//Images not yet sourced
-    		//DroneObject.setImage(ImageIO.read(new File(dir + "test")));
     		//BulletObject.setImage(ImageIO.read(new File(dir + "test")));
     		
     		Image[] airplaneImages = new Image[4];

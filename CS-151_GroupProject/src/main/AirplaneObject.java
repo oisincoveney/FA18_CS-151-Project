@@ -31,7 +31,7 @@ public class AirplaneObject implements GameObject
 	
 	public boolean intersects(GameObject o)
 	{
-		return getLeft() > o.getRight() && getRight() < o.getLeft() &&
+		return getLeft() < o.getRight() && getRight() > o.getLeft() &&
 				getBottom() > o.getTop() && getTop() < o.getBottom();
 	}
 
