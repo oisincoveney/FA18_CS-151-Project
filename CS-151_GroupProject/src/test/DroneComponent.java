@@ -43,7 +43,7 @@ public class DroneComponent extends JComponent implements GameComponent
 	public DroneComponent(Dimension panelDimensions)
 	{
 		this.panelDimensions = panelDimensions;
-		DroneObject.setMax(panelDimensions.height - 100);
+		DroneObject.setMax(panelDimensions.height - 20);
 		spawn();
 	}
 }

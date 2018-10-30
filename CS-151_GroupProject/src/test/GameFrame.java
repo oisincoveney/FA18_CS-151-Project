@@ -1,13 +1,11 @@
 package test;
 import java.awt.*;
 import javax.swing.*;
-import java.util.Random;
 
 @SuppressWarnings("serial")
 public class GameFrame extends JFrame
 {
 	private static Image img;
-	private Dimension FRAME_SIZE;
 	private GamePanel gamePanel;
 	private ScorePanel scorePanel;
 	
@@ -58,13 +56,18 @@ public class GameFrame extends JFrame
 		
 		public GamePanel(Dimension dimensions)
 		{
-			drone = new DroneComponent(dimensions); //Change so components know frame size
+			//Initialize game components
+			drone = new DroneComponent(dimensions);
 			planes = new AirplaneComponent(dimensions);
 			bullets = new BulletComponent(dimensions);
-			
+			//Add all game components
 			add(drone);
 			add(planes);
 			add(bullets);
+			//Set panel size
+	        setMinimumSize(dimensions);
+			setPreferredSize(dimensions);
+			setMaximumSize(dimensions);
 		}
 	}
 	
@@ -80,19 +83,16 @@ public class GameFrame extends JFrame
     {
     	//Create the frame and initialize the components
     	super(title);
-    	FRAME_SIZE = new Dimension(width, height);
-    	gamePanel = new GamePanel(FRAME_SIZE);
+    	gamePanel = new GamePanel(new Dimension(width, height));
     	scorePanel = new ScorePanel();
     	//Set the layout and add the panels
-    	setLayout(new BorderLayout());
+    	setLayout(new BorderLayout(0, 0));
     	add(gamePanel, BorderLayout.CENTER);
     	add(scorePanel, BorderLayout.SOUTH);
-        //Set termination settings, visible and specify frame size
+        //Set termination settings, lock frame size, and make visible
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	setResizable(false);
         setVisible(true);
-        setMinimumSize(FRAME_SIZE);
-		setPreferredSize(FRAME_SIZE);
-		setMaximumSize(FRAME_SIZE);
-		setResizable(false);
+		pack();
     }
 }

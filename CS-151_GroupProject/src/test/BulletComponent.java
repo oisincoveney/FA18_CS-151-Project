@@ -30,7 +30,7 @@ public class BulletComponent extends JComponent implements GameComponent
 	{
 		/* TEMP */
 		//Will need to spawn on the player
-		int x = 40, y = rnd.nextInt(panelDimensions.height - 100) + 10;
+		int x = 40, y = rnd.nextInt(panelDimensions.height - 30) + 10;
 		bullets.addLast(new BulletObject(x, y, BULLET_SPEED));
 	}
 

@@ -29,7 +29,7 @@ public class AirplaneComponent extends JComponent implements GameComponent
 	public void spawn()
 	{
 		int x = panelDimensions.width + rnd.nextInt(200) + 60;
-		int y = rnd.nextInt(panelDimensions.height - 110) + 5;
+		int y = rnd.nextInt(panelDimensions.height - 60) + 5;
 		planes.addLast(new AirplaneObject(rnd.nextInt(AirplaneObject.imgCount()), x, y, MAX_SPEED - (rnd.nextInt(4) * 0.1)));
 	}
 	
