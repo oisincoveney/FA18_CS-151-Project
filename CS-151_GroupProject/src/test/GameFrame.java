@@ -65,6 +65,7 @@ public class GameFrame extends JFrame
 		{
 			rnd = new Random();
 			drone = new DroneComponent(20, (FRAME_SIZE.height / 2) - 100); //Change so components know frame size
+			DroneObject.setMax(FRAME_SIZE.height - 120); //temp
 			planes = new AirplaneComponent();
 			bullets = new BulletComponent();
 			

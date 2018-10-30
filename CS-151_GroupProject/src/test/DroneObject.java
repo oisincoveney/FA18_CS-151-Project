@@ -1,6 +1,7 @@
 package test;
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import javax.swing.JComponent;
 
 @SuppressWarnings("serial")
 public class DroneObject extends JComponent implements GameObject

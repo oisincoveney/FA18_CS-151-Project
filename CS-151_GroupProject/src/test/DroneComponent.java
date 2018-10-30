@@ -10,6 +10,7 @@ public class DroneComponent extends JComponent implements GameComponent
 	
 	public void move()
 	{
+		if (!drone.checkBounds()) drone.changeDir();
 		drone.move();
 	}
 	
