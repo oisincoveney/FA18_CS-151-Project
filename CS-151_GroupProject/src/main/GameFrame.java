@@ -5,71 +5,9 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class GameFrame extends JFrame
 {
-	private static Image img;
 	private GamePanel gamePanel;
 	private ScorePanel scorePanel;
-	
-	public static void setImage(Image img) { GameFrame.img = img; }
-	
-	public void update()
-	{
-		gamePanel.move();
-		gamePanel.checkCollisions();
-		gamePanel.repaint();
-	}
-	
-	public void spawnTarget() { gamePanel.spawnTarget(); }
-	
-	public void spawnBullet() { gamePanel.spawnBullet(); }
-	
-	private class GamePanel extends JPanel
-	{
-		private DroneComponent drone;
-		private AirplaneComponent planes;
-		private BulletComponent bullets;
-		
-		public void paint(Graphics g)
-		{
-			super.paintComponent(g);
-			g.drawImage(img, 0, 0, null);
-			drone.paint(g);
-			planes.paint(g);
-			bullets.paint(g);
-		}
-		
-		public void move()
-		{
-			drone.move();
-			planes.move();
-			bullets.move();
-		}
-		
-		public void checkCollisions()
-		{
-			drone.checkCollisions(planes);
-			bullets.checkCollisions(planes);
-		}
-		
-		public void spawnTarget() { planes.spawn(); }
-		
-		public void spawnBullet() { drone.shoot(); }
-		
-		public GamePanel(Dimension dimensions)
-		{
-			//Initialize game components
-			planes = new AirplaneComponent(dimensions);
-			bullets = new BulletComponent(dimensions);
-			drone = new DroneComponent(dimensions, bullets);
-			//Add all game components
-			add(drone);
-			add(planes);
-			add(bullets);
-			//Set panel size
-	        setMinimumSize(dimensions);
-			setPreferredSize(dimensions);
-			setMaximumSize(dimensions);
-		}
-	}
+	private UpdateAgent updateAgent;
 	
 	private class ScorePanel extends JPanel
 	{
@@ -77,6 +15,12 @@ public class GameFrame extends JFrame
 		{
 			add(new JLabel("Test"));
 		}
+	}
+	
+	public void setUpdateAgent(int updateDelay, int spawnDelay)
+	{
+		updateAgent = new UpdateAgent(gamePanel, updateDelay, spawnDelay);
+		updateAgent.start();
 	}
 	
     public GameFrame(String title, int width, int height)

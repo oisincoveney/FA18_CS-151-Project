@@ -19,7 +19,7 @@ public class DroneComponent extends JComponent implements GameComponent
 	
 	public void shoot()
 	{
-		bullets.spawn((int) drone.getX() + 86, (int) drone.getY() + 38);
+		bullets.spawn((int) drone.getRight() - 60, (int) drone.getBottom() - 4);
 	}	
 	
 	public void spawn(int x, int y)
