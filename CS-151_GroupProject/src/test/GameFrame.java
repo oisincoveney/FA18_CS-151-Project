@@ -52,7 +52,7 @@ public class GameFrame extends JFrame
 		
 		public void checkCollisions()
 		{
-			planes.checkCollisions(drone);
+			drone.checkCollisions(planes);
 			//bullets.checkCollisions(planes);
 		}
 		

@@ -1,6 +1,7 @@
 package test;
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import javax.swing.JComponent;
 import java.util.Iterator;
 import java.util.LinkedList;
 

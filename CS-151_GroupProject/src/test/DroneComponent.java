@@ -1,6 +1,7 @@
 package test;
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import javax.swing.JComponent;
 
 @SuppressWarnings("serial")
 public class DroneComponent extends JComponent implements GameComponent
@@ -37,7 +38,6 @@ public class DroneComponent extends JComponent implements GameComponent
 		drone.draw(g2);
 	}
 	
-	//Will remove x y from init
 	public DroneComponent(int x, int y)
 	{
 		spawn(x, y);

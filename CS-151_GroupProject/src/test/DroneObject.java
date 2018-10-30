@@ -1,10 +1,8 @@
 package test;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import javax.swing.JComponent;
 
-@SuppressWarnings("serial")
-public class DroneObject extends JComponent implements GameObject
+public class DroneObject implements GameObject
 {
 	private static int minY = 0, maxY;
 	private static Image img;
