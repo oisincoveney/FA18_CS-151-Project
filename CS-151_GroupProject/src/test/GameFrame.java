@@ -6,30 +6,30 @@ import java.util.Random;
 @SuppressWarnings("serial")
 public class GameFrame extends JFrame
 {
-	private static Dimension FRAME_SIZE;
-	private static GamePanel gamePanel;
-	private static ScorePanel scorePanel;
+	private static Image img;
+	private Random rnd;
+	private Dimension FRAME_SIZE;
+	private GamePanel gamePanel;
+	private ScorePanel scorePanel;
 	
-	public static void setImage(Image img) { GamePanel.img = img; }
+	public static void setImage(Image img) { GameFrame.img = img; }
 	
-	public static void update()
+	public void update()
 	{
 		gamePanel.move();
 		gamePanel.checkCollisions();
 		gamePanel.repaint();
 	}
 	
-	public static void spawnProjectile()
+	public void spawnProjectile()
 	{
 		//check if the drone is ready to fire, if it is then spawn a bullet at the drone
 	}
 	
-	public static void spawnTarget() { gamePanel.spawnTarget(); }
+	public void spawnTarget() { gamePanel.spawnTarget(); }
 	
-	private static class GamePanel extends JPanel
+	private class GamePanel extends JPanel
 	{
-		private static Image img;
-		private Random rnd;
 		private DroneComponent drone;
 		private AirplaneComponent planes;
 		private BulletComponent bullets;
@@ -75,7 +75,7 @@ public class GameFrame extends JFrame
 		}
 	}
 	
-	private static class ScorePanel extends JPanel
+	private class ScorePanel extends JPanel
 	{
 		public ScorePanel()
 		{
