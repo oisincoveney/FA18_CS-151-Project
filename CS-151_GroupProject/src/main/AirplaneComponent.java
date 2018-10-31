@@ -2,6 +2,8 @@ package main;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+
 import javax.swing.JComponent;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -11,10 +13,46 @@ import java.util.Random;
 public class AirplaneComponent extends JComponent implements GameComponent
 {
 	private LinkedList<AirplaneObject> planes;
-	private final Dimension panelDimensions;
-	private final double MAX_SPEED = 1.2;
+	private Dimension panelDimensions;
+	private double MAX_SPEED = 1.2;
+	private Image[] images;
 	private Random rnd = new Random();
 	private int spawnDir = 1;
+	
+	private class AirplaneObject implements GameObject
+	{
+		private int planeType;
+		private double x, y;
+		private double v;
+		
+		public void draw(Graphics2D g2) { g2.drawImage(images[planeType], (int)x, (int)y, null); }
+
+		public void move() { x -= v; }
+		
+		public double getLeft() { return x; }
+
+		public double getRight() { return x + images[planeType].getWidth(null); }
+
+		public double getTop() { return y; }
+
+		public double getBottom() { return y + images[planeType].getHeight(null); }
+		
+		public boolean checkBounds() { return (getRight() > 0); } 
+		
+		public boolean intersects(GameObject o)
+		{
+			return getLeft() < o.getRight() && getRight() > o.getLeft() &&
+					getBottom() > o.getTop() && getTop() < o.getBottom();
+		}
+
+		public AirplaneObject(int imgIndex, double x, double y, double v)
+		{
+			this.planeType = imgIndex;
+			this.x = x;
+			this.y = y;
+			this.v = v;
+		}
+	}
 	
 	public void move()
 	{
@@ -35,7 +73,7 @@ public class AirplaneComponent extends JComponent implements GameComponent
 	
 	public void spawn(int x, int y)
 	{
-		planes.addLast(new AirplaneObject(rnd.nextInt(AirplaneObject.imgCount()), x, y, MAX_SPEED - (rnd.nextInt(4) * 0.1)));
+		planes.addLast(new AirplaneObject(rnd.nextInt(images.length), x, y, MAX_SPEED - (rnd.nextInt(4) * 0.1)));
 	}
 	
 	
@@ -75,6 +113,8 @@ public class AirplaneComponent extends JComponent implements GameComponent
 		Graphics2D g2 = (Graphics2D) g;
 		for (GameObject plane : planes) plane.draw(g2);
 	}
+	
+	public void setImages(Image[] images) { this.images = images; }
 	
 	public AirplaneComponent(Dimension panelDimensions)
 	{
