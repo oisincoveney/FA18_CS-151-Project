@@ -63,15 +63,23 @@ public class GameFrame extends JFrame
 	
 	public class ScorePanel extends JPanel
 	{
+		int currentLevel = 1;
+		
+		public void changeLevel()
+		{
+			currentLevel++;
+			//change label and stuff
+		}
+		
 		public ScorePanel()
 		{
 			add(new JLabel("Test"));
 		}
 	}
 	
-	public void setUpdateAgent(int updateDelay, int spawnDelay)
+	public void setUpdateAgent(int updateDelay, int spawnDelay, int levelDelay)
 	{
-		updateAgent = new UpdateAgent(gamePanel, updateDelay, spawnDelay);
+		updateAgent = new UpdateAgent(gamePanel, scorePanel, updateDelay, spawnDelay, levelDelay);
 		updateAgent.start();
 	}
 	
