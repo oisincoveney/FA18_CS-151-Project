@@ -33,7 +33,7 @@ public class BulletComponent extends JComponent implements GameComponent
 
 		public double getBottom() { return y + img.getHeight(null); }
 		
-		public boolean checkBounds() { return (getLeft() < panelDimensions.width / 4); }
+		public boolean checkBounds() { return (getLeft() < panelDimensions.width / 2); }
 		
 		public boolean intersects(GameObject o)
 		{

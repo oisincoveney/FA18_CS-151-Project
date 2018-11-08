@@ -15,6 +15,7 @@ public class AirplaneComponent extends JComponent implements GameComponent
 	private LinkedList<AirplaneObject> planes;
 	private Dimension panelDimensions;
 	private double MAX_SPEED = 1.2;
+	private double speedFactor = 1.0;
 	private Image[] images;
 	private Random rnd = new Random();
 	private int spawnDir = 1;
@@ -27,7 +28,7 @@ public class AirplaneComponent extends JComponent implements GameComponent
 		
 		public void draw(Graphics2D g2) { g2.drawImage(images[planeType], (int)x, (int)y, null); }
 
-		public void move() { x -= v; }
+		public void move() { x -= v * speedFactor; }
 		
 		public double getLeft() { return x; }
 
@@ -113,6 +114,8 @@ public class AirplaneComponent extends JComponent implements GameComponent
 		Graphics2D g2 = (Graphics2D) g;
 		for (GameObject plane : planes) plane.draw(g2);
 	}
+	
+	public void setSpeedFactor(double speedFactor) { this.speedFactor = speedFactor; }
 	
 	public void setImages(Image[] images) { this.images = images; }
 	

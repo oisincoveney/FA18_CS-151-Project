@@ -1,5 +1,7 @@
 package main;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 @SuppressWarnings("serial")
@@ -9,29 +11,12 @@ public class GameFrame extends JFrame
 	private ScorePanel scorePanel;
 	private UpdateAgent updateAgent;
 	
-	public class GamePanel extends JPanel
+	private class GamePanel extends JPanel
 	{
 		private DroneComponent drone;
 		private AirplaneComponent planes;
 		private BulletComponent bullets;
 		private Image img;
-				
-		public void move()
-		{
-			drone.move();
-			planes.move();
-			bullets.move();
-		}
-		
-		public void checkCollisions()
-		{
-			drone.checkCollisions(planes);
-			bullets.checkCollisions(planes);
-		}
-		
-		public void spawnTarget() { planes.spawn(); }
-		
-		public void spawnBullet() { drone.shoot(); }
 		
 		public void paint(Graphics g)
 		{
@@ -61,9 +46,9 @@ public class GameFrame extends JFrame
 		}
 	}
 	
-	public class ScorePanel extends JPanel
+	private class ScorePanel extends JPanel
 	{
-		int currentLevel = 1;
+		private int currentLevel = 1;
 		
 		public void changeLevel()
 		{
@@ -77,9 +62,94 @@ public class GameFrame extends JFrame
 		}
 	}
 	
+	private class UpdateAgent
+	{
+		private Timer updateTimer;
+		private Timer spawnTimer;
+		private Timer levelTimer;
+		private Timer collisionTimer;
+		private boolean isImmune = false;
+		
+		private ActionListener updateListener = new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				gamePanel.drone.move();
+				gamePanel.planes.move();
+				gamePanel.bullets.move();
+				if (!isImmune && gamePanel.drone.checkCollisions(gamePanel.planes) == 1)
+				{
+					startCollisionTimer();
+				}
+				gamePanel.bullets.checkCollisions(gamePanel.planes);
+				
+				gamePanel.repaint();
+			}
+		};
+		
+		private ActionListener spawnListener = new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				gamePanel.planes.spawn();
+				/* TEMP */
+				//Testing bullet collisions with planes
+				gamePanel.drone.shoot();
+			}
+		};
+		
+		private ActionListener levelListener = new ActionListener() {
+			double difficultyChange = .88;
+			int minDelay = 600;
+			
+			public void actionPerformed(ActionEvent e)
+			{
+				int newDelay = (int) (spawnTimer.getDelay() * difficultyChange);
+				
+				if (newDelay > minDelay)
+				{
+					scorePanel.changeLevel();	
+					setDifficulty(newDelay);
+					if (difficultyChange < .90) difficultyChange += .01;
+				}
+			}
+		};
+		
+		private ActionListener collisionListener = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				gamePanel.planes.setSpeedFactor(1.0);
+				collisionTimer.stop();
+				isImmune = false;
+			}
+			
+		};
+		
+		public void start()
+		{
+			updateTimer.start();
+			spawnTimer.start();
+			levelTimer.start();
+		}
+		
+		public void setDifficulty(int spawnDelay) { spawnTimer.setDelay(spawnDelay); }
+		
+		public void startCollisionTimer()
+		{
+			isImmune = true;
+			gamePanel.planes.setSpeedFactor(0.6);
+			collisionTimer.start();
+		}
+		
+		public UpdateAgent(int updateDelay, int spawnDelay, int levelDelay)
+		{
+			updateTimer = new Timer(updateDelay, updateListener);
+			spawnTimer = new Timer(spawnDelay, spawnListener);
+			levelTimer = new Timer(levelDelay, levelListener);
+			collisionTimer = new Timer(5000, collisionListener);
+		}
+	}
+	
 	public void setUpdateAgent(int updateDelay, int spawnDelay, int levelDelay)
 	{
-		updateAgent = new UpdateAgent(gamePanel, scorePanel, updateDelay, spawnDelay, levelDelay);
+		updateAgent = new UpdateAgent(updateDelay, spawnDelay, levelDelay);
 		updateAgent.start();
 	}
 	
