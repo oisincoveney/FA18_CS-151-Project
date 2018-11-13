@@ -122,7 +122,6 @@ public class GameFrame extends JFrame
 				{
 					if (speedFactor == MAX_SPEED_FACTOR)
 					{
-						System.out.println("1A");
 						isImmune = true;
 						gamePanel.drone.setBlink(true);
 						collisionTimer.setDelay(10);
@@ -131,7 +130,6 @@ public class GameFrame extends JFrame
 					
 					if (speedFactor <= MIN_SPEED_FACTOR)
 					{
-						System.out.println("1B");
 						speedFactor = MIN_SPEED_FACTOR;
 						changeRate = -changeRate;
 						collisionTimer.setDelay(5000);
@@ -141,14 +139,12 @@ public class GameFrame extends JFrame
 				{
 					if (speedFactor == MIN_SPEED_FACTOR)
 					{
-						System.out.println("2A");
 						collisionTimer.setDelay(10);
 					}
 					speedFactor +=changeRate;
 					
 					if (speedFactor >= MAX_SPEED_FACTOR)
 					{
-						System.out.println("2B");
 						isImmune = false;
 						gamePanel.drone.setBlink(false);
 						speedFactor = MAX_SPEED_FACTOR;
