@@ -76,10 +76,7 @@ public class GameFrame extends JFrame
 				gamePanel.drone.move();
 				gamePanel.planes.move();
 				gamePanel.bullets.move();
-				if (!isImmune && gamePanel.drone.checkCollisions(gamePanel.planes) == 1)
-				{
-					startCollisionTimer();
-				}
+				if (!isImmune && gamePanel.drone.checkCollisions(gamePanel.planes) == 1) collisionTimer.start();
 				gamePanel.bullets.checkCollisions(gamePanel.planes);
 				
 				gamePanel.repaint();
@@ -114,12 +111,54 @@ public class GameFrame extends JFrame
 		};
 		
 		private ActionListener collisionListener = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				gamePanel.planes.setSpeedFactor(1.0);
-				collisionTimer.stop();
-				isImmune = false;
-			}
+			private final double MAX_SPEED_FACTOR = 1.0;
+			private final double MIN_SPEED_FACTOR = 0.5;
+			private double speedFactor = MAX_SPEED_FACTOR;
+			private double changeRate = -0.01;
 			
+			public void actionPerformed(ActionEvent e)
+			{
+				if (changeRate < 0)
+				{
+					if (speedFactor == MAX_SPEED_FACTOR)
+					{
+						System.out.println("1A");
+						isImmune = true;
+						gamePanel.drone.setBlink(true);
+						collisionTimer.setDelay(10);
+					}
+					speedFactor +=changeRate;
+					
+					if (speedFactor <= MIN_SPEED_FACTOR)
+					{
+						System.out.println("1B");
+						speedFactor = MIN_SPEED_FACTOR;
+						changeRate = -changeRate;
+						collisionTimer.setDelay(5000);
+					}
+				}
+				else
+				{
+					if (speedFactor == MIN_SPEED_FACTOR)
+					{
+						System.out.println("2A");
+						collisionTimer.setDelay(10);
+					}
+					speedFactor +=changeRate;
+					
+					if (speedFactor >= MAX_SPEED_FACTOR)
+					{
+						System.out.println("2B");
+						isImmune = false;
+						gamePanel.drone.setBlink(false);
+						speedFactor = MAX_SPEED_FACTOR;
+						changeRate = -changeRate;
+						collisionTimer.stop();
+					}
+				}
+				
+				gamePanel.planes.setSpeedFactor(speedFactor);
+			}
 		};
 		
 		public void start()
@@ -131,19 +170,12 @@ public class GameFrame extends JFrame
 		
 		public void setDifficulty(int spawnDelay) { spawnTimer.setDelay(spawnDelay); }
 		
-		public void startCollisionTimer()
-		{
-			isImmune = true;
-			gamePanel.planes.setSpeedFactor(0.6);
-			collisionTimer.start();
-		}
-		
 		public UpdateAgent(int updateDelay, int spawnDelay, int levelDelay)
 		{
 			updateTimer = new Timer(updateDelay, updateListener);
 			spawnTimer = new Timer(spawnDelay, spawnListener);
 			levelTimer = new Timer(levelDelay, levelListener);
-			collisionTimer = new Timer(5000, collisionListener);
+			collisionTimer = new Timer(updateDelay, collisionListener);
 		}
 	}
 	

@@ -13,7 +13,9 @@ public class BulletComponent extends JComponent implements GameComponent
 {
 	private LinkedList<BulletObject> bullets;
 	private Dimension panelDimensions;
-	private double BULLET_SPEED = 4;
+	private final double MIN_BULLET_SPEED = 0.5;
+	private final double MAX_BULLET_SPEED = 4.0;
+	private final double BULLET_ACCELERATION = 0.05;
 	private Image img;
 	
 	private class BulletObject implements GameObject
@@ -23,7 +25,11 @@ public class BulletComponent extends JComponent implements GameComponent
 		
 		public void draw(Graphics2D g2) { g2.drawImage(img, (int)x, (int)y, null); }
 
-		public void move() { x += v; }
+		public void move()
+		{
+			if (v < MAX_BULLET_SPEED) v += BULLET_ACCELERATION;
+			x += v;
+		}
 		
 		public double getLeft() { return x; }
 
@@ -62,7 +68,7 @@ public class BulletComponent extends JComponent implements GameComponent
 	
 	public void spawn(int x, int y)
 	{
-		bullets.addLast(new BulletObject(x, y, BULLET_SPEED));
+		bullets.addLast(new BulletObject(x, y, MIN_BULLET_SPEED));
 	}
 	
 
