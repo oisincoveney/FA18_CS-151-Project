@@ -16,12 +16,14 @@ public class GameFrame extends JFrame
 		private DroneComponent drone;
 		private AirplaneComponent planes;
 		private BulletComponent bullets;
+		private BackgroundComponent bg;
 		private Image img;
 		
 		public void paint(Graphics g)
 		{
 			super.paintComponent(g);
 			g.drawImage(img, 0, 0, null);
+			bg.paint(g);
 			drone.paint(g);
 			planes.paint(g);
 			bullets.paint(g);
@@ -35,6 +37,7 @@ public class GameFrame extends JFrame
 			planes = new AirplaneComponent(dimensions);
 			bullets = new BulletComponent(dimensions);
 			drone = new DroneComponent(dimensions, bullets);
+			bg = new BackgroundComponent();
 			//Add all game components
 			add(drone);
 			add(planes);
@@ -45,7 +48,7 @@ public class GameFrame extends JFrame
 			setMaximumSize(dimensions);
 		}
 	}
-	
+
 	private class ScorePanel extends JPanel
 	{
 		private int currentLevel = 1;
@@ -183,7 +186,7 @@ public class GameFrame extends JFrame
 	
 	public void setImages(Image bgImg, Image playerImg, Image[] airplaneImgs, Image missileImg)
 	{
-		gamePanel.setImage(bgImg);
+		gamePanel.bg.setImage(bgImg);
 		gamePanel.drone.setImage(playerImg);
 		gamePanel.planes.setImages(airplaneImgs);
 		gamePanel.bullets.setImage(missileImg);
