@@ -23,7 +23,7 @@ public class GameLauncher
     	
     	try
     	{
-    		bgImg = ImageIO.read(new File(dir + "background_sky.png"));
+    		bgImg = ImageIO.read(new File(dir + "tiled_sky.png"));
     		playerImg = ImageIO.read(new File(dir + "player.png"));
     		missileImg = ImageIO.read(new File(dir + "missile.png"));
     		
