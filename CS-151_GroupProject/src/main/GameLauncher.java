@@ -14,12 +14,12 @@ public class GameLauncher
     	loadImages();
     	GameFrame gameFrame = new GameFrame("Drone Game", 1200, 600);
     	gameFrame.setImages(bgImg, playerImg, airplaneImgs, missileImg);
-    	gameFrame.setUpdateAgent(5, 1600, 90000);
+    	gameFrame.setUpdateAgent(5, 1600, 90000, 1000);
     }
     
     private static void loadImages()
     {
-    	String dir = "src/assets/";
+    	String dir = "/Users/danielfonyo/Desktop/FA18_CS-151-Project/CS-151_GroupProject/src/assets/";
     	
     	try
     	{

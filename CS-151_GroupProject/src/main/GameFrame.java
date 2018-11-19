@@ -3,14 +3,22 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 @SuppressWarnings("serial")
 public class GameFrame extends JFrame
 {
 	private GamePanel gamePanel;
-	private ScorePanel scorePanel;
 	private UpdateAgent updateAgent;
-	
+	private MenuPanel menuPanel;
+
+	public int timeRemaining = 90;
+	public JLabel timerDisplay = new JLabel();
+	public JLabel victorLabel = new JLabel();
+	public int score;
+	public JLabel scoreLabel;
+	public JButton startBtn;
+
 	private class GamePanel extends JPanel
 	{
 		private DroneComponent drone;
@@ -18,7 +26,7 @@ public class GameFrame extends JFrame
 		private BulletComponent bullets;
 		private BackgroundComponent bg;
 		private Image img;
-		
+
 		public void paint(Graphics g)
 		{
 			super.paintComponent(g);
@@ -49,19 +57,36 @@ public class GameFrame extends JFrame
 		}
 	}
 
-	private class ScorePanel extends JPanel
-	{
+	private class MenuPanel extends JPanel{
+
 		private int currentLevel = 1;
-		
+
 		public void changeLevel()
 		{
 			currentLevel++;
 			//change label and stuff
 		}
-		
-		public ScorePanel()
-		{
-			add(new JLabel("Test"));
+
+		public MenuPanel(){
+			add(new JLabel("Score: "));
+			scoreLabel = new JLabel(Integer.toString(score));
+			add(scoreLabel);
+
+			add(new JLabel("Seconds Remaining:"));
+			add(timerDisplay);
+
+			victorLabel.setForeground(Color.GREEN);
+			add(victorLabel);
+
+			startBtn = new JButton("PLAY");
+			add(startBtn);
+			startBtn.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					updateAgent.start();
+					startBtn.setEnabled(false);
+				}
+			});
 		}
 	}
 	
@@ -71,7 +96,28 @@ public class GameFrame extends JFrame
 		private Timer spawnTimer;
 		private Timer levelTimer;
 		private Timer collisionTimer;
+		private Timer gameClockTimer;
 		private boolean isImmune = false;
+
+		private ActionListener gameClockListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (timeRemaining == 0){
+					updateAgent.stop();
+					scoreLabel.setText(Integer.toString(score+1));
+					victorLabel.setText("VICTORY");
+					startBtn.setEnabled(true);
+				}
+				else if (timeRemaining <= 11){
+					timeRemaining -= 1;
+					timerDisplay.setText(Integer.toString(timeRemaining));
+					timerDisplay.setForeground(Color.RED);
+				}
+				else
+					timeRemaining -= 1;
+					timerDisplay.setText(Integer.toString(timeRemaining));
+			}
+		};
 		
 		private ActionListener updateListener = new ActionListener() {
 			public void actionPerformed(ActionEvent e)
@@ -106,7 +152,7 @@ public class GameFrame extends JFrame
 				
 				if (newDelay > minDelay)
 				{
-					scorePanel.changeLevel();	
+					menuPanel.changeLevel();
 					setDifficulty(newDelay);
 					if (difficultyChange < .90) difficultyChange += .01;
 				}
@@ -165,23 +211,32 @@ public class GameFrame extends JFrame
 			updateTimer.start();
 			spawnTimer.start();
 			levelTimer.start();
+			gameClockTimer.start();
+		}
+
+		public void stop() {
+			updateTimer.stop();
+			spawnTimer.stop();
+			levelTimer.stop();
+			gameClockTimer.stop();
 		}
 		
 		public void setDifficulty(int spawnDelay) { spawnTimer.setDelay(spawnDelay); }
-		
-		public UpdateAgent(int updateDelay, int spawnDelay, int levelDelay)
+
+		public UpdateAgent(int updateDelay, int spawnDelay, int levelDelay, int gameClockDelay)
 		{
 			updateTimer = new Timer(updateDelay, updateListener);
 			spawnTimer = new Timer(spawnDelay, spawnListener);
 			levelTimer = new Timer(levelDelay, levelListener);
 			collisionTimer = new Timer(updateDelay, collisionListener);
+			gameClockTimer = new Timer(gameClockDelay, gameClockListener);
 		}
 	}
 	
-	public void setUpdateAgent(int updateDelay, int spawnDelay, int levelDelay)
+	public void setUpdateAgent(int updateDelay, int spawnDelay, int levelDelay, int gameClockDelay)
 	{
-		updateAgent = new UpdateAgent(updateDelay, spawnDelay, levelDelay);
-		updateAgent.start();
+		updateAgent = new UpdateAgent(updateDelay, spawnDelay, levelDelay, gameClockDelay);
+		//updateAgent.start();
 	}
 	
 	public void setImages(Image bgImg, Image playerImg, Image[] airplaneImgs, Image missileImg)
@@ -197,11 +252,11 @@ public class GameFrame extends JFrame
     	//Create the frame and initialize the components
     	super(title);
     	gamePanel = new GamePanel(new Dimension(width, height));
-    	scorePanel = new ScorePanel();
+    	menuPanel = new MenuPanel();
     	//Set the layout and add the panels
     	setLayout(new BorderLayout(0, 0));
     	add(gamePanel, BorderLayout.CENTER);
-    	add(scorePanel, BorderLayout.SOUTH);
+    	add(menuPanel, BorderLayout.NORTH);
         //Set termination settings, lock frame size, and make visible
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	setResizable(false);
