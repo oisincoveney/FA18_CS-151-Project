@@ -17,19 +17,16 @@ public class GameFrame extends JFrame
 		private AirplaneComponent planes;
 		private BulletComponent bullets;
 		private BackgroundComponent bg;
-		private Image img;
 		
 		public void paint(Graphics g)
 		{
 			super.paintComponent(g);
-			g.drawImage(img, 0, 0, null);
 			bg.paint(g);
 			drone.paint(g);
 			planes.paint(g);
 			bullets.paint(g);
 		}
 		
-		public void setImage(Image img) { this.img = img; }
 		
 		public GamePanel(Dimension dimensions)
 		{
@@ -79,6 +76,7 @@ public class GameFrame extends JFrame
 				gamePanel.drone.move();
 				gamePanel.planes.move();
 				gamePanel.bullets.move();
+				gamePanel.bg.move();
 				if (!isImmune && gamePanel.drone.checkCollisions(gamePanel.planes) == 1) collisionTimer.start();
 				gamePanel.bullets.checkCollisions(gamePanel.planes);
 				
@@ -157,6 +155,7 @@ public class GameFrame extends JFrame
 				}
 				
 				gamePanel.planes.setSpeedFactor(speedFactor);
+				gamePanel.bg.setAnimationSpeed(speedFactor);
 			}
 		};
 		
