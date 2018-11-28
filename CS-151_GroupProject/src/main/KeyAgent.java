@@ -15,31 +15,20 @@ public class KeyAgent implements KeyListener
     @Override
     public void keyTyped(KeyEvent e)
     {
-        System.out.println("e = " + e);
-        if (e.getKeyChar() == ' ')
-        {
-            drone.shoot();
-        }
-        else if (e.getKeyChar() == 'w')
-        {
-            drone.moveUp();
-        }
-        else if (e.getKeyChar() == 's')
-        {
-            drone.moveDown();
-        }
+        if (e.getKeyChar() == ' ') drone.shoot();
     }
 
     @Override
     public void keyPressed(KeyEvent e)
     {
-
-        System.out.println("e = " + e);
+    	if (e.getKeyChar() == 'w') drone.setDir(-1, true); 
+    	else if (e.getKeyChar() == 's') drone.setDir(1, true); 
     }
 
     @Override
     public void keyReleased(KeyEvent e)
     {
-        System.out.println("e = " + e);
+    	if (e.getKeyChar() == 'w') drone.setDir(-1, false); 
+    	else if (e.getKeyChar() == 's') drone.setDir(1, false);
     }
 }

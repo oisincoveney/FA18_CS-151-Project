@@ -89,6 +89,7 @@ public class GameFrame extends JFrame
         {
             public void actionPerformed(ActionEvent e)
             {
+            	gamePanel.drone.move();
                 gamePanel.planes.move();
                 gamePanel.bullets.move();
                 gamePanel.bg.move();
@@ -107,10 +108,6 @@ public class GameFrame extends JFrame
             public void actionPerformed(ActionEvent e)
             {
                 gamePanel.planes.spawn();
-                /* TEMP */
-                //Testing bullet collisions with planes
-
-//                gamePanel.drone.shoot();
             }
         };
 
