@@ -1,104 +1,102 @@
 package main;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
+import javax.swing.*;
+import java.awt.*;
 
-import javax.swing.JComponent;
-
-@SuppressWarnings("serial")
+@SuppressWarnings ("serial")
 public class DroneComponent extends JComponent implements GameComponent
 {
-	private DroneObject drone;
-	private BulletComponent bullets;
-	private Dimension panelDimensions;
-	private double DRONE_SPEED = 1;
-	private Image img;
-	private boolean blink = false;
-	private int blinkTimer = 0;
-	private final int BLINK_DURATION = 20;
-	
-	private class DroneObject implements GameObject
-	{
-		private double x, y;
-		private double v;
-		
-		public void draw(Graphics2D g2) { g2.drawImage(img, (int)x, (int)y, null); }
+    protected DroneObject drone;
+    private Dimension panelDimensions;
+    private double DRONE_SPEED = 1;
+    private Image img;
+    private boolean blink = false;
+    private int blinkTimer = 0;
+    private final int BLINK_DURATION = 20;
 
-		public void move() { y += v; }
-		
-		public void changeDir() { v = -v; }
-		
-		public double getLeft() { return x; }
 
-		public double getRight() { return x + img.getWidth(null); }
+    protected class DroneObject implements GameObject
+    {
+        private double x, y;
+        private double v;
+        private boolean moveUp, moveDown;
 
-		public double getTop() { return y; }
+        public void draw(Graphics2D g2) { g2.drawImage(img, (int) x, (int) y, null); }
 
-		public double getBottom() { return y + img.getHeight(null); }
-		
-		public boolean checkBounds() { return (getTop() >= 10 && getBottom() <= panelDimensions.height - 10); }
-		
-		public boolean intersects(GameObject o)
-		{
-			return getLeft() < o.getRight() && getRight() > o.getLeft() &&
-					getBottom() > o.getTop() && getTop() < o.getBottom();
-		}
+        public void move()
+        {
+        	int dir = (moveUp) ? (moveDown ? 0 : -1) : (moveDown ? 1 : 0);
+        	y += v * dir;
+    	}
 
-		public DroneObject(double x, double y, double v)
-		{
-			this.x = x;
-			this.y = y;
-			this.v = v;
-		}
+        public double getLeft() { return x; }
+
+        public double getRight() { return x + img.getWidth(null); }
+
+        public double getTop() { return y; }
+
+        public double getBottom() { return y + img.getHeight(null); }
+        
+        public boolean checkBounds()
+        {
+        	if (moveUp) return getTop() >= 10;
+        	if (moveDown) return getBottom() <= panelDimensions.height - 10;
+            return false;
+        }
+
+        public boolean intersects(GameObject o)
+        {
+            return getLeft() < o.getRight() && getRight() > o.getLeft() &&
+                    getBottom() > o.getTop() && getTop() < o.getBottom();
+        }
+
+        public DroneObject(double x, double y, double v)
+        {
+            this.x = x;
+            this.y = y;
+            this.v = v;
+        }
+    }
+
+    public void move() { if (drone.checkBounds()) drone.move(); }
+
+    public void spawn(int x, int y) { drone = new DroneObject(x, y, DRONE_SPEED); }
+
+    public boolean checkCollisions(GameObject obj) { return drone.intersects(obj); }
+
+    public int checkCollisions(GameComponent comp) { return (comp.checkCollisions(drone)) ? 1 : 0; }
+
+    public void paint(Graphics g)
+    {
+        if (blink)
+        {
+            blinkTimer++;
+            if (blinkTimer >= BLINK_DURATION)
+            {
+                blinkTimer = -BLINK_DURATION;
+            }
+            if (blinkTimer < 0)
+            {
+                return;
+            }
+        }
+        Graphics2D g2 = (Graphics2D) g;
+        drone.draw(g2);
+    }
+
+    public void setImage(Image img) { this.img = img; }
+
+    public void setBlink(boolean blink) { this.blink = blink; }
+    
+    public void setDir(int dir, boolean event)
+    {
+    	if (dir == -1) drone.moveUp = event;
+    	else if (dir == 1) drone.moveDown = event;
 	}
-	
-	public void move()
-	{
-		if (!drone.checkBounds()) drone.changeDir();
-		drone.move();
-	}
-	
-	public void shoot()
-	{
-		bullets.spawn((int) drone.getRight() - 60, (int) drone.getBottom() - 4);
-	}	
-	
-	public void spawn(int x, int y)
-	{
-		drone = new DroneObject(x, y, DRONE_SPEED);
-	}
-	
-	public boolean checkCollisions(GameObject obj)
-	{
-		return drone.intersects(obj);
-	}
-	
-	public int checkCollisions(GameComponent comp)
-	{
-		return (comp.checkCollisions(drone)) ? 1 : 0;
-	}
-	
-	public void paint(Graphics g)
-	{
-		if (blink)
-		{
-			blinkTimer++;
-			if (blinkTimer >= BLINK_DURATION) blinkTimer = -BLINK_DURATION;
-			if (blinkTimer < 0) return;
-		}
-		Graphics2D g2 = (Graphics2D) g;
-		drone.draw(g2);
-	}
-	
-	public void setImage(Image img) { this.img = img; }
-	
-	public void setBlink(boolean blink) {this.blink = blink; }
-	
-	public DroneComponent(Dimension panelDimensions, BulletComponent bullets)
-	{
-		this.panelDimensions = panelDimensions;
-		this.bullets = bullets;
-		spawn(20, (panelDimensions.height / 2) - 100);
-	}
+
+    public DroneComponent(Dimension panelDimensions)
+    {
+        this.panelDimensions = panelDimensions;
+        //this.bullets = bullets;
+        spawn(20, (panelDimensions.height / 2) - 100);
+    }
 }
