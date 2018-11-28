@@ -1,25 +1,20 @@
 package main;
-
-import javafx.util.Pair;
-
 import javax.swing.*;
 import java.awt.*;
 
 @SuppressWarnings ("serial")
 public class DroneComponent extends JComponent implements GameComponent
 {
-    private DroneObject drone;
-    private BulletComponent bullets;
+    protected DroneObject drone;
     private Dimension panelDimensions;
     private double DRONE_SPEED = 1;
     private Image img;
-
     private boolean blink = false;
     private int blinkTimer = 0;
     private final int BLINK_DURATION = 20;
 
 
-    private class DroneObject implements GameObject
+    protected class DroneObject implements GameObject
     {
         private double x, y;
         private double v;
@@ -64,8 +59,6 @@ public class DroneComponent extends JComponent implements GameComponent
 
     public void move() { if (drone.checkBounds()) drone.move(); }
 
-    public void shoot() { bullets.spawn((int) drone.getRight() - 60, (int) drone.getBottom() - 4); }
-
     public void spawn(int x, int y) { drone = new DroneObject(x, y, DRONE_SPEED); }
 
     public boolean checkCollisions(GameObject obj) { return drone.intersects(obj); }
@@ -100,10 +93,10 @@ public class DroneComponent extends JComponent implements GameComponent
     	else if (dir == 1) drone.moveDown = event;
 	}
 
-    public DroneComponent(Dimension panelDimensions, BulletComponent bullets)
+    public DroneComponent(Dimension panelDimensions)
     {
         this.panelDimensions = panelDimensions;
-        this.bullets = bullets;
+        //this.bullets = bullets;
         spawn(20, (panelDimensions.height / 2) - 100);
     }
 }

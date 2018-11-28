@@ -16,26 +16,21 @@ public class GameFrame extends JFrame
 
     public DroneComponent getDrone()
     {
-        return gamePanel.drone;
+        return gamePanel.player;
     }
 
     private class GamePanel extends JPanel
     {
-        private DroneComponent drone;
+        private PlayerComponent player;
         private AirplaneComponent planes;
         private BulletComponent bullets;
         private BackgroundComponent bg;
-
-        public DroneComponent getDrone()
-        {
-            return drone;
-        }
-
+        
         public void paint(Graphics g)
         {
             super.paintComponent(g);
             bg.paint(g);
-            drone.paint(g);
+            player.paint(g);
             planes.paint(g);
             bullets.paint(g);
         }
@@ -46,10 +41,10 @@ public class GameFrame extends JFrame
             //Initialize game components
             planes = new AirplaneComponent(dimensions);
             bullets = new BulletComponent(dimensions);
-            drone = new DroneComponent(dimensions, bullets);
+            player = new PlayerComponent(dimensions, bullets);
             bg = new BackgroundComponent();
             //Add all game components
-            add(drone);
+            add(player);
             add(planes);
             add(bullets);
             //Set panel size
@@ -89,11 +84,11 @@ public class GameFrame extends JFrame
         {
             public void actionPerformed(ActionEvent e)
             {
-            	gamePanel.drone.move();
+            	gamePanel.player.move();
                 gamePanel.planes.move();
                 gamePanel.bullets.move();
                 gamePanel.bg.move();
-                if (!isImmune && gamePanel.drone.checkCollisions(gamePanel.planes) == 1)
+                if (!isImmune && gamePanel.player.checkCollisions(gamePanel.planes) == 1)
                 {
                     collisionTimer.start();
                 }
@@ -146,7 +141,7 @@ public class GameFrame extends JFrame
                     if (speedFactor == MAX_SPEED_FACTOR)
                     {
                         isImmune = true;
-                        gamePanel.drone.setBlink(true);
+                        gamePanel.player.setBlink(true);
                         collisionTimer.setDelay(10);
                     }
                     speedFactor += changeRate;
@@ -169,7 +164,7 @@ public class GameFrame extends JFrame
                     if (speedFactor >= MAX_SPEED_FACTOR)
                     {
                         isImmune = false;
-                        gamePanel.drone.setBlink(false);
+                        gamePanel.player.setBlink(false);
                         speedFactor = MAX_SPEED_FACTOR;
                         changeRate = -changeRate;
                         collisionTimer.stop();
@@ -211,7 +206,7 @@ public class GameFrame extends JFrame
     public void setImages(Image bgImg, Image playerImg, Image[] airplaneImgs, Image missileImg)
     {
         gamePanel.bg.setImage(bgImg);
-        gamePanel.drone.setImage(playerImg);
+        gamePanel.player.setImage(playerImg);
         gamePanel.planes.setImages(airplaneImgs);
         gamePanel.bullets.setImage(missileImg);
     }
@@ -226,6 +221,7 @@ public class GameFrame extends JFrame
         setLayout(new BorderLayout(0, 0));
         add(gamePanel, BorderLayout.CENTER);
         add(scorePanel, BorderLayout.SOUTH);
+        addKeyListener(gamePanel.player.getKeyAgent());
         //Set termination settings, lock frame size, and make visible
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
