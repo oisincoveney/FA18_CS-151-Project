@@ -14,7 +14,7 @@ public class AirplaneComponent extends JComponent implements GameComponent
 {
 	private LinkedList<AirplaneObject> planes;
 	private Dimension panelDimensions;
-	private double MAX_SPEED = 1.2;
+	private double maxSpeed = 1.2;
 	private double speedFactor = 1.0;
 	private Image[] images;
 	private Random rnd = new Random();
@@ -74,7 +74,7 @@ public class AirplaneComponent extends JComponent implements GameComponent
 	
 	public void spawn(int x, int y)
 	{
-		planes.addLast(new AirplaneObject(rnd.nextInt(images.length), x, y, MAX_SPEED - (rnd.nextInt(4) * 0.1)));
+		planes.addLast(new AirplaneObject(rnd.nextInt(images.length), x, y, maxSpeed - (rnd.nextInt(4) * 0.1)));
 	}
 	
 	
@@ -115,13 +115,20 @@ public class AirplaneComponent extends JComponent implements GameComponent
 		for (GameObject plane : planes) plane.draw(g2);
 	}
 	
+	public void incrementMaxSpeed() { maxSpeed += 0.1; }
+	
 	public void setSpeedFactor(double speedFactor) { this.speedFactor = speedFactor; }
 	
 	public void setImages(Image[] images) { this.images = images; }
 	
+	public void init()
+	{
+		planes = new LinkedList<AirplaneObject>();
+	}
+	
 	public AirplaneComponent(Dimension panelDimensions)
 	{
 		this.panelDimensions = panelDimensions;
-		planes = new LinkedList<AirplaneObject>();
+		init();
 	}
 }

@@ -111,9 +111,14 @@ public class BulletComponent extends JComponent implements GameComponent
 	
 	public void setImage(Image img) { this.img = img; }
 	
+	public void init()
+	{
+		bullets = new LinkedList<BulletObject>();
+	}
+	
 	public BulletComponent(Dimension panelDimensions)
 	{
 		this.panelDimensions = panelDimensions;
-		bullets = new LinkedList<BulletObject>();
+		init();
 	}
 }

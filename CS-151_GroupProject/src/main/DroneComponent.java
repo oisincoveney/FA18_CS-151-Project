@@ -7,12 +7,8 @@ public class DroneComponent extends JComponent implements GameComponent
 {
     protected DroneObject drone;
     private Dimension panelDimensions;
-    private double DRONE_SPEED = 1;
+    private final double DRONE_SPEED = 1.0;
     private Image img;
-    private boolean blink = false;
-    private int blinkTimer = 0;
-    private final int BLINK_DURATION = 20;
-
 
     protected class DroneObject implements GameObject
     {
@@ -64,29 +60,19 @@ public class DroneComponent extends JComponent implements GameComponent
 
     public void paint(Graphics g)
     {
-        if (blink)
-        {
-            blinkTimer++;
-            if (blinkTimer >= BLINK_DURATION)
-            {
-                blinkTimer = -BLINK_DURATION;
-            }
-            if (blinkTimer < 0)
-            {
-                return;
-            }
-        }
         Graphics2D g2 = (Graphics2D) g;
         drone.draw(g2);
     }
 
     public void setImage(Image img) { this.img = img; }
-
-    public void setBlink(boolean blink) { this.blink = blink; }
+    
+    public void init()
+    {
+    	 spawn(20, (panelDimensions.height / 2) - 100);
+    }
 
     public DroneComponent(Dimension panelDimensions)
     {
         this.panelDimensions = panelDimensions;
-        spawn(20, (panelDimensions.height / 2) - 100);
     }
 }

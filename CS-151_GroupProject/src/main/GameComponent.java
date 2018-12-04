@@ -10,5 +10,7 @@ public interface GameComponent
 	
 	public int checkCollisions(GameComponent comp);
 	
+	public void init();
+	
 	public void paint(java.awt.Graphics g);
 }

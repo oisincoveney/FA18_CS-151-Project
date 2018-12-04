@@ -15,7 +15,7 @@ public class GameLauncher
         loadImages("src/assets/");
         GameFrame gameFrame = new GameFrame("Drone Game", 1200, 600);
         gameFrame.setImages(bgImg, playerImg, airplaneImgs, missileImg);
-        gameFrame.setUpdateAgent(5, 2000, 90000);
+        gameFrame.setUpdateAgent(5, 2000, 12000);
     }
 
     private static void loadImages(String dir)
