@@ -145,7 +145,7 @@ public class GameFrame extends JFrame
 				}
 				else if (timeRemaining == 5)
 				{
-					menuPanel.timerDisplay.setForeground(Color.RED);
+					menuPanel.timerDisplay.setForeground(Color.BLUE);
 				}
 				
 				menuPanel.timerDisplay.setText(Integer.toString(timeRemaining));
@@ -191,6 +191,7 @@ public class GameFrame extends JFrame
 						gamePanel.player.setBlink(true);
 						collisionTimer.setDelay(10);
 						menuPanel.collisionsDisplay.setText(Integer.toString(++numCollisions));
+						menuPanel.timerDisplay.setForeground(Color.RED);
 						levelTimer.stop();
 					}
 					speedFactor +=changeRate;
@@ -217,6 +218,7 @@ public class GameFrame extends JFrame
 						speedFactor = MAX_SPEED_FACTOR;
 						changeRate = -changeRate;
 						collisionTimer.stop();
+						menuPanel.timerDisplay.setForeground((timeRemaining <= 5) ? Color.BLUE : Color.BLACK);
 						levelTimer.start();
 					}
 				}
