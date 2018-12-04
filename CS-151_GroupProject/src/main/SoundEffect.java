@@ -1,8 +1,8 @@
 package main;
 
 import javax.sound.sampled.*;
+import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 /**
  This enum encapsulates all the sound effects of a game, so as to separate the sound playing codes from the game codes.
@@ -36,9 +36,9 @@ public enum SoundEffect
         try
         {
             // Use URL (instead of File) to read from disk and JAR.
-            URL url = this.getClass().getClassLoader().getResource(soundFileName);
+            File file = new File(GameLauncher.assetDirectory + soundFileName);
             // Set up an audio input stream piped from the sound file.
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
             // Get a clip resource.
             clip = AudioSystem.getClip();
             // Open audio clip and load samples from the audio input stream.

@@ -4,8 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 @SuppressWarnings ("serial")
 public class GameFrame extends JFrame
@@ -25,7 +23,7 @@ public class GameFrame extends JFrame
         private AirplaneComponent planes;
         private BulletComponent bullets;
         private BackgroundComponent bg;
-        
+
         public void paint(Graphics g)
         {
             super.paintComponent(g);
@@ -84,7 +82,7 @@ public class GameFrame extends JFrame
         {
             public void actionPerformed(ActionEvent e)
             {
-            	gamePanel.player.move();
+                gamePanel.player.move();
                 gamePanel.planes.move();
                 gamePanel.bullets.move();
                 gamePanel.bg.move();
@@ -140,6 +138,7 @@ public class GameFrame extends JFrame
                 {
                     if (speedFactor == MAX_SPEED_FACTOR)
                     {
+                        SoundEffect.HIT.play();
                         isImmune = true;
                         gamePanel.player.setBlink(true);
                         collisionTimer.setDelay(10);
