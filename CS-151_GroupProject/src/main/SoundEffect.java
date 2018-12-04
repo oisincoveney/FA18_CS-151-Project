@@ -13,8 +13,9 @@ import java.net.URL;
  */
 public enum SoundEffect
 {
-    EXPLODE("explode.wav"),
-    SHOOT("shoot.mp3");
+    EXPLODE("explosion.wav"),
+    SHOOT("shoot.wav"),
+    HIT("hit.wav");
 
 
     // Nested class for specifying volume
