@@ -5,7 +5,7 @@ import java.awt.*;
 public class BackgroundComponent
 {
 	private final int BOUNDS = 1200;
-	private double animationSpeed = 1.0;
+	private double animationSpeed = 0.6;
     private BackgroundObject[] bg;
     private Image img;
     

@@ -18,14 +18,16 @@ public class DroneComponent extends JComponent implements GameComponent
     {
         private double x, y;
         private double v;
-        private boolean moveUp, moveDown;
+        protected boolean moveUp, moveDown, moveLeft, moveRight;
 
         public void draw(Graphics2D g2) { g2.drawImage(img, (int) x, (int) y, null); }
 
         public void move()
         {
-        	int dir = (moveUp) ? (moveDown ? 0 : -1) : (moveDown ? 1 : 0);
-        	y += v * dir;
+        	int yDir = (moveUp) ? (moveDown ? 0 : -1) : (moveDown ? 1 : 0);
+        	int xDir = (moveLeft) ? (moveRight ? 0 : -1) : (moveRight ? 1 : 0);
+        	if ((yDir == -1 && getTop() >= 10) || (yDir == 1 && getBottom() <= panelDimensions.height - 10)) y += v * yDir;
+        	if ((xDir == -1 && getLeft() >= 20) || (xDir == 1 && getRight() <= panelDimensions.width / 4)) x += v * xDir / 2;
     	}
 
         public double getLeft() { return x; }
@@ -36,12 +38,7 @@ public class DroneComponent extends JComponent implements GameComponent
 
         public double getBottom() { return y + img.getHeight(null); }
         
-        public boolean checkBounds()
-        {
-        	if (moveUp) return getTop() >= 10;
-        	if (moveDown) return getBottom() <= panelDimensions.height - 10;
-            return false;
-        }
+        public boolean checkBounds() { return true; }
 
         public boolean intersects(GameObject o)
         {
@@ -57,7 +54,7 @@ public class DroneComponent extends JComponent implements GameComponent
         }
     }
 
-    public void move() { if (drone.checkBounds()) drone.move(); }
+    public void move() { drone.move(); }
 
     public void spawn(int x, int y) { drone = new DroneObject(x, y, DRONE_SPEED); }
 
@@ -86,17 +83,10 @@ public class DroneComponent extends JComponent implements GameComponent
     public void setImage(Image img) { this.img = img; }
 
     public void setBlink(boolean blink) { this.blink = blink; }
-    
-    public void setDir(int dir, boolean event)
-    {
-    	if (dir == -1) drone.moveUp = event;
-    	else if (dir == 1) drone.moveDown = event;
-	}
 
     public DroneComponent(Dimension panelDimensions)
     {
         this.panelDimensions = panelDimensions;
-        //this.bullets = bullets;
         spawn(20, (panelDimensions.height / 2) - 100);
     }
 }

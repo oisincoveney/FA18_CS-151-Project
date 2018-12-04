@@ -26,15 +26,19 @@ public class PlayerComponent extends DroneComponent
         @Override
         public void keyPressed(KeyEvent e)
         {
-        	if (e.getKeyChar() == 'w') setDir(-1, true); 
-        	else if (e.getKeyChar() == 's') setDir(1, true); 
+        	if (e.getKeyChar() == 'w') drone.moveUp = true; 
+        	else if (e.getKeyChar() == 's') drone.moveDown = true;
+        	else if (e.getKeyChar() == 'a') drone.moveLeft = true;
+        	else if (e.getKeyChar() == 'd') drone.moveRight = true;
         }
 
         @Override
         public void keyReleased(KeyEvent e)
         {
-        	if (e.getKeyChar() == 'w') setDir(-1, false); 
-        	else if (e.getKeyChar() == 's') setDir(1, false);
+        	if (e.getKeyChar() == 'w') drone.moveUp = false; 
+        	else if (e.getKeyChar() == 's') drone.moveDown = false;
+        	else if (e.getKeyChar() == 'a') drone.moveLeft = false;
+        	else if (e.getKeyChar() == 'd') drone.moveRight = false;
         }
     }
     
