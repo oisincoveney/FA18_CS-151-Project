@@ -25,7 +25,7 @@ public enum SoundEffect
     }
 
 
-    public static Volume volume = Volume.LOW;
+    public static Volume volume = Volume.MEDIUM;
 
     // Each sound effect has its own clip, loaded with its own sound file.
     private Clip clip;
