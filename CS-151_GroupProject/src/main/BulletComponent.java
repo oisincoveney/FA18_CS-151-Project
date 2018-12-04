@@ -18,7 +18,7 @@ public class BulletComponent extends JComponent implements GameComponent
 	private final double BULLET_ACCELERATION = 0.05;
 	private Image img;
 	
-	private class BulletObject implements GameObject
+	protected class BulletObject implements GameObject
 	{
 		private double x, y;
 		private double v;

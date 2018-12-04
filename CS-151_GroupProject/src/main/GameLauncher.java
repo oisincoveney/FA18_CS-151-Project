@@ -9,10 +9,11 @@ public class GameLauncher
 {
     private static Image[] airplaneImgs = new Image[4];
     private static Image bgImg, playerImg, missileImg;
+    public static String assetDirectory = "src/assets/";
 
     public static void main(String args[])
     {
-        loadImages("src/assets/");
+        loadImages(assetDirectory);
         GameFrame gameFrame = new GameFrame("Drone Game", 1200, 600);
         gameFrame.setImages(bgImg, playerImg, airplaneImgs, missileImg);
         gameFrame.setUpdateAgent(5, 2000, 12000);

@@ -78,6 +78,7 @@ public class PlayerComponent extends DroneComponent implements GameComponent
     {
     	if (!isReloading)
     	{
+    		SoundEffect.SHOOT.play();
     		bullets.spawn((int) drone.getRight() - 60, (int) drone.getBottom() - 4);
     		isReloading = true;
     		updateAgent.reloadTimer.start();

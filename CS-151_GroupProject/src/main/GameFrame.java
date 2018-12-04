@@ -48,6 +48,7 @@ public class GameFrame extends JFrame
 	private class MenuPanel extends JPanel
 	{
 		private JLabel timerDisplay = new JLabel();
+		private JLabel levelDisplay = new JLabel();
 		private JLabel scoreDisplay = new JLabel();
 		private JLabel collisionsDisplay = new JLabel();
 		private JLabel planesHitDisplay = new JLabel();
@@ -65,6 +66,10 @@ public class GameFrame extends JFrame
 					startBtn.setEnabled(false);
 				}
 			});
+	
+			add(new JLabel("Level: "));
+			levelDisplay.setText("1");
+			add(levelDisplay);
 			
 			add(new JLabel("Score: "));
 			scoreDisplay.setText("0");
@@ -91,31 +96,11 @@ public class GameFrame extends JFrame
 		private Timer spawnTimer;
 		private Timer levelTimer;
 		private Timer collisionTimer;
-		private Timer gameClockTimer;
+		private final int LEVEL_TIME;
 		private boolean isImmune = false;
 		private int timeRemaining;
 		private int numCollisions = 0;
 		private int planesDestroyed = 0;
-
-		private ActionListener gameClockListener = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				timeRemaining--;
-				
-				if (timeRemaining == 0)
-				{
-					timeRemaining = levelTimer.getDelay() / 1000;
-					menuPanel.timerDisplay.setForeground(Color.BLACK);
-				}
-				else if (timeRemaining == 5)
-				{
-					menuPanel.timerDisplay.setForeground(Color.RED);
-				}
-				
-				menuPanel.timerDisplay.setText(Integer.toString(timeRemaining));
-			}
-		};
 		
 		private ActionListener updateListener = new ActionListener() {
 			@Override
@@ -142,16 +127,37 @@ public class GameFrame extends JFrame
 		};
 		
 		private ActionListener levelListener = new ActionListener() {
-			double difficultyChange = .80;
+			double difficultyChange = .85;
 			int minDelay = 400;
+			int level = 1;
 			int score = 0;
 			
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				//Update score
+				timeRemaining--;
+				
+				if (timeRemaining == 0)
+				{
+					timeRemaining = LEVEL_TIME;
+					menuPanel.timerDisplay.setForeground(Color.BLACK);
+					updateLevel();
+				}
+				else if (timeRemaining == 5)
+				{
+					menuPanel.timerDisplay.setForeground(Color.RED);
+				}
+				
+				menuPanel.timerDisplay.setText(Integer.toString(timeRemaining));
+			}
+			
+			private void updateLevel()
+			{
+				//Update level and score
+				level++;
 				if (numCollisions <= 2) score++;
 				numCollisions = 0;
+				menuPanel.levelDisplay.setText(Integer.toString(level));
 				menuPanel.scoreDisplay.setText(Integer.toString(score));
 				menuPanel.collisionsDisplay.setText("0");
 				
@@ -185,7 +191,7 @@ public class GameFrame extends JFrame
 						gamePanel.player.setBlink(true);
 						collisionTimer.setDelay(10);
 						menuPanel.collisionsDisplay.setText(Integer.toString(++numCollisions));
-						gameClockTimer.stop();
+						levelTimer.stop();
 					}
 					speedFactor +=changeRate;
 					
@@ -211,7 +217,7 @@ public class GameFrame extends JFrame
 						speedFactor = MAX_SPEED_FACTOR;
 						changeRate = -changeRate;
 						collisionTimer.stop();
-						gameClockTimer.start();
+						levelTimer.start();
 					}
 				}
 				
@@ -224,27 +230,25 @@ public class GameFrame extends JFrame
 			updateTimer.start();
 			spawnTimer.start();
 			levelTimer.start();
-			gameClockTimer.start();
 		}
 
-		public UpdateAgent(int updateDelay, int spawnDelay, int levelDelay, int gameClockDelay)
+		public UpdateAgent(int updateDelay, int spawnDelay, int levelDelay)
 		{
+			LEVEL_TIME = timeRemaining = (int) levelDelay / 1000;
 			updateTimer = new Timer(updateDelay, updateListener);
 			spawnTimer = new Timer(spawnDelay, spawnListener);
-			levelTimer = new Timer(levelDelay, levelListener);
+			levelTimer = new Timer(1000, levelListener);
 			collisionTimer = new Timer(updateDelay, collisionListener);
-			gameClockTimer = new Timer(gameClockDelay, gameClockListener);
-			timeRemaining = (int) levelDelay / 1000;
 		}
 	}
 	
 	public void setUpdateAgent(int updateDelay, int spawnDelay, int levelDelay)
 	{
-		updateAgent = new UpdateAgent(updateDelay, spawnDelay, levelDelay, 1000);
+		updateAgent = new UpdateAgent(updateDelay, spawnDelay, levelDelay);
 		menuPanel.timerDisplay.setText(Integer.toString((int) levelDelay / 1000));
 		//updateAgent.start();
 	}
-	
+
     public void setImages(Image bgImg, Image playerImg, Image[] airplaneImgs, Image missileImg)
     {
         gamePanel.bg.setImage(bgImg);

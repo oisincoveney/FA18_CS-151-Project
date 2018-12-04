@@ -20,7 +20,7 @@ public class AirplaneComponent extends JComponent implements GameComponent
 	private Random rnd = new Random();
 	private int spawnDir = 1;
 	
-	private class AirplaneObject implements GameObject
+	protected class AirplaneObject implements GameObject
 	{
 		private int planeType;
 		private double x, y;
@@ -87,6 +87,8 @@ public class AirplaneComponent extends JComponent implements GameComponent
 			if (plane.intersects(obj))
 			{
 				i.remove();
+				if (obj instanceof DroneComponent.DroneObject) SoundEffect.HIT.play();
+				else if (obj instanceof BulletComponent.BulletObject) SoundEffect.EXPLODE.play();
 				return true;
 			}
 		}
