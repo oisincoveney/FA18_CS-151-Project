@@ -148,7 +148,7 @@ public class GameFrame extends JFrame
 					menuPanel.timerDisplay.setForeground(Color.BLUE);
 				}
 				
-				menuPanel.timerDisplay.setText(Integer.toString(timeRemaining));
+				menuPanel.timerDisplay.setText(Double.toString((double) timeRemaining / 10));
 			}
 			
 			private void updateLevel()
@@ -236,10 +236,10 @@ public class GameFrame extends JFrame
 
 		public UpdateAgent(int updateDelay, int spawnDelay, int levelDelay)
 		{
-			LEVEL_TIME = timeRemaining = (int) levelDelay / 1000;
+			LEVEL_TIME = timeRemaining = (int) levelDelay / 100;
 			updateTimer = new Timer(updateDelay, updateListener);
 			spawnTimer = new Timer(spawnDelay, spawnListener);
-			levelTimer = new Timer(1000, levelListener);
+			levelTimer = new Timer(100, levelListener);
 			collisionTimer = new Timer(updateDelay, collisionListener);
 		}
 	}
