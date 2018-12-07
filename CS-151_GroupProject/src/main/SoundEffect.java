@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.IOException;
 
 /**
+
+<Made with help from http://www.ntu.edu.sg/home/ehchua/programming/java/J8c_PlayingSound.html>
+
  This enum encapsulates all the sound effects of a game, so as to separate the sound playing codes from the game codes.
  1. Define all your sound effect names and the associated wave file. 2. To play a specific sound, simply invoke
  SoundEffect.SOUND_NAME.play(). 3. You might optionally invoke the static method SoundEffect.init() to pre-load all the
